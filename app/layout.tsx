@@ -4,6 +4,7 @@ import { Inter } from "next/font/google";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import Image from "next/image";
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-sans' });
 
@@ -27,7 +28,14 @@ export default function RootLayout({
 
             {/* Brand Identity / Logo */}
             <Link href="/" className="flex items-center gap-3 cursor-pointer group">
-              <span className="text-2xl transition-transform group-hover:scale-110 duration-200">💻</span>
+              <Image
+                src="/cit_cpe_logo.png"
+                alt="CpE Portal Logo"
+                width={32}
+                height={32}
+                className="object-contain transition-transform group-hover:scale-110 duration-200"
+                priority
+              />
               <span className="font-black text-lg tracking-tight text-slate-800 group-hover:text-university-maroon transition-colors">
                 CpE Portal
               </span>

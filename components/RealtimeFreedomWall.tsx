@@ -40,13 +40,15 @@ export default function RealtimeFreedomWall({ initialPosts }: { initialPosts: Po
   }, []);
 
   return (
-    <Card className="border-slate-200 bg-white shadow-sm h-[640px] flex flex-col rounded-2xl overflow-hidden border-t-4 border-t-university-maroon">
-      <CardHeader className="pb-3 bg-slate-50/50 border-b border-slate-100">
+    <Card className="border-slate-200 bg-white shadow-xs h-[640px] flex flex-col rounded-2xl overflow-hidden border-t-4 border-t-university-maroon transition-all duration-300">
+
+      {/* 1. COMPONENT HEADER */}
+      <CardHeader className="pb-4 bg-slate-50/60 border-b border-slate-100">
         <div className="flex items-center justify-between">
-          <CardTitle className="text-lg font-black text-slate-900 flex items-center gap-2">
+          <CardTitle className="text-lg font-black tracking-tight text-slate-900 flex items-center gap-2">
             🕊️ Live Freedom Wall
           </CardTitle>
-          <div className="flex items-center gap-1.5 bg-emerald-50 text-emerald-700 font-mono text-[9px] px-2 py-0.5 rounded-full font-bold border border-emerald-200">
+          <div className="flex items-center gap-1.5 bg-emerald-50 text-emerald-700 font-mono text-[9px] px-2.5 py-1 rounded-full font-bold border border-emerald-200 tracking-wider">
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
             LIVE FEED
           </div>
@@ -56,31 +58,45 @@ export default function RealtimeFreedomWall({ initialPosts }: { initialPosts: Po
         </CardDescription>
       </CardHeader>
 
-      {/* Optimized view pane with elegant custom scrollbars */}
-      <CardContent className="flex-1 overflow-y-auto space-y-3 p-4 bg-slate-50/30 scrollbar-thin scrollbar-thumb-slate-200">
+      {/* 2. LIVE DATA STREAM PANE */}
+      <CardContent className="flex-1 overflow-y-auto space-y-3 p-4 bg-slate-50/20 scrollbar-thin">
         {posts.length > 0 ? (
           posts.map((post) => (
             <div
               key={post.id}
-              className="bg-white border border-slate-100 p-4 rounded-xl text-sm text-slate-700 shadow-2xs transition duration-200 transform hover:scale-[1.01]"
+              className="bg-white border border-slate-200/60 border-l-4 border-l-university-gold p-4 rounded-xl transition-all duration-200 transform hover:scale-[1.01] hover:border-slate-300 shadow-2xs hover:shadow-xs flex flex-col justify-between gap-3"
             >
-              <p className="leading-relaxed font-normal text-slate-600">{post.content}</p>
-              <span className="block text-[10px] text-slate-400 font-mono text-right mt-2">
-                {new Date(post.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-              </span>
+              <p className="leading-relaxed text-sm font-normal text-slate-700 break-words">
+                {post.content}
+              </p>
+
+              {/* Dynamic Engineering Metadata Row */}
+              <div className="flex items-center justify-between text-[10px] font-mono text-slate-400 border-t border-slate-50 pt-2">
+                <span className="text-slate-400/80 font-medium tracking-tight">
+                  ⚡ cpe_node_anon
+                </span>
+                <span className="font-semibold tracking-wider uppercase bg-slate-50 px-1.5 py-0.5 rounded text-slate-400">
+                  {new Date(post.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                </span>
+              </div>
             </div>
           ))
         ) : (
-          <div className="h-full flex items-center justify-center">
-            <p className="text-sm text-slate-400 italic text-center py-12">The wall is silent. Be the first to break the ice.</p>
+          <div className="h-full flex flex-col items-center justify-center space-y-2 py-12">
+            <span className="text-2xl opacity-40">📭</span>
+            <p className="text-xs text-slate-400 font-mono tracking-wide italic text-center">
+              No runtime transmissions captured. <br />Be the first to stream a node.
+            </p>
           </div>
         )}
       </CardContent>
 
+      {/* 3. CTA INTERACTION PAD */}
       <CardFooter className="p-4 bg-white border-t border-slate-100">
         <a href="/freedom-wall/submit" className="w-full">
-          <Button className="w-full bg-university-maroon hover:bg-[#5a0c22] text-white font-bold text-sm h-11 rounded-xl shadow-xs transition active:scale-[0.99] flex items-center justify-center gap-2 cursor-pointer">
-            <span>✏️</span> Express an Anonymous Thought
+          <Button className="w-full bg-university-maroon hover:bg-[#5a0c22] text-white font-bold text-sm h-12 rounded-xl shadow-xs transition duration-150 active:scale-[0.99] flex items-center justify-center gap-2 cursor-pointer group">
+            <span className="transition-transform group-hover:rotate-12 duration-200">✏️</span>
+            Express an Anonymous Thought
           </Button>
         </a>
       </CardFooter>
