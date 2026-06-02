@@ -3,6 +3,7 @@ import "./globals.css";
 import { Inter } from "next/font/google";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-sans' });
 
@@ -17,52 +18,62 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={cn("font-sans", inter.variable)}>
-      <body className="bg-slate-50 text-slate-900 flex flex-col min-h-screen">
+    <html lang="en" className={cn("font-sans scroll-smooth", inter.variable)}>
+      <body className="bg-slate-50 text-slate-900 flex flex-col min-h-screen antialiased">
+
         {/* Navigation Header */}
-        <header className="bg-white border-b border-slate-200 sticky top-0 z-50">
+        <header className="bg-white/80 backdrop-blur-md border-b border-slate-200/80 sticky top-0 z-50 transition-all">
           <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
 
             {/* Brand Identity / Logo */}
-            <div className="flex items-center gap-3 cursor-pointer">
-              <span className="text-2xl">💻</span>
-              <span className="font-bold text-lg tracking-tight text-slate-800">
+            <Link href="/" className="flex items-center gap-3 cursor-pointer group">
+              <span className="text-2xl transition-transform group-hover:scale-110 duration-200">💻</span>
+              <span className="font-black text-lg tracking-tight text-slate-800 group-hover:text-university-maroon transition-colors">
                 CpE Portal
               </span>
-            </div>
+            </Link>
 
-            {/* Desktop Navigation Links (Hidden on small screens, flexes on desktop) */}
-            <nav className="hidden md:flex items-center gap-6 text-sm font-medium text-slate-600">
-              <a href="/" className="hover:text-university-maroon transition cursor-pointer">Home</a>
-              <a href="/faculty" className="hover:text-university-maroon transition cursor-pointer">Faculty</a>
-              <a href="/achievements" className="hover:text-university-maroon transition cursor-pointer">Achievements</a>
-              <Button className="bg-org-blue hover:bg-blue-700 text-white font-medium text-xs rounded-md shadow-xs cursor-pointer px-4 h-9">
-                Student Login
-              </Button>
+            {/* Desktop Navigation Links */}
+            <nav className="hidden md:flex items-center gap-6 text-sm font-semibold text-slate-600">
+              <Link href="/" className="hover:text-university-maroon transition-colors">Home</Link>
+              <Link href="/faculty" className="hover:text-university-maroon transition-colors">Faculty</Link>
+              <Link href="/achievements" className="hover:text-university-maroon transition-colors">Achievements</Link>
+
+              <Link href="/login">
+                <Button className="bg-university-maroon hover:bg-[#5a0c22] text-white font-bold text-xs rounded-lg shadow-xs cursor-pointer px-5 h-9 transition-all active:scale-95">
+                  Student Login
+                </Button>
+              </Link>
             </nav>
 
-            {/* Mobile Action Button (Only visible on smartphones) */}
+            {/* Mobile Action Links */}
             <div className="flex md:hidden items-center gap-2">
-              <a href="/faculty" className="text-xs text-slate-600 font-medium px-2 py-1 hover:bg-slate-100 rounded-md cursor-pointer">
+              <Link href="/faculty" className="text-xs text-slate-600 font-bold px-2 py-1.5 hover:bg-slate-100 rounded-md transition-colors">
                 Faculty
-              </a>
-              <Button className="bg-org-blue hover:bg-blue-700 text-white font-medium text-[11px] rounded-md px-3 h-8 cursor-pointer">
-                Login
-              </Button>
+              </Link>
+              <Link href="/login">
+                <Button className="bg-university-maroon hover:bg-[#5a0c22] text-white font-bold text-[11px] rounded-lg px-3 h-8 active:scale-95 transition-all">
+                  Login
+                </Button>
+              </Link>
             </div>
 
           </div>
         </header>
 
-        {/* Dynamic Page Content */}
+        {/* Dynamic Page Content Shell */}
         <div className="flex-1">
           {children}
         </div>
 
-        {/* Global Footer */}
-        <footer className="bg-slate-800 text-slate-400 text-sm py-6 border-t border-slate-700 text-center">
-          <p>© {new Date().getFullYear()} Computer Engineering Department. All Rights Reserved.</p>
+        {/* Global Footer (Isolated seamlessly from specific page overrides) */}
+        <footer className="bg-slate-950 text-slate-500 text-xs py-8 border-t border-slate-900 text-center font-mono">
+          <div className="max-w-7xl mx-auto px-4 space-y-2">
+            <p>&copy; {new Date().getFullYear()} Computer Engineering Department. Institutional Cloud Network.</p>
+            <p className="text-slate-700">Protected via OAuth Domain Verification & Row-Level Security (RLS)</p>
+          </div>
         </footer>
+
       </body>
     </html>
   );
