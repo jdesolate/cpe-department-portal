@@ -1,26 +1,62 @@
 @import "tailwindcss";
 
+/* 1. Global CSS Design Tokens & Variable Configurations */
 :root {
   --background: #ffffff;
-  --foreground: #171717;
+  --foreground: #0f172a; /* Clean Dark Charcoal text */
+
+  /* Custom Institutional Branding Codes */
+  --university-maroon: #7a122e; /* #7A122E - Administrative/Primary Header Vibe */
+  --university-gold: #ffd700;   /* #FFD700 - Premium Accent/Highlighting */
+  --org-blue: #0056b3;          /* #0056b3 - ICpEP Brand Blue */
+  --org-black: #0a0a0a;         /* Deep Onyx Black */
+
+  /* Shadcn Semantic Interface Variable Mapping */
+  --card: #ffffff;
+  --card-foreground: #0f172a;
+  --popover: #ffffff;
+  --popover-foreground: #0f172a;
+  --primary: var(--university-maroon); /* Primary UI actions default to Maroon */
+  --primary-foreground: #ffffff;
+  --secondary: #f1f5f9;
+  --secondary-foreground: #0f172a;
+  --muted: #f1f5f9;
+  --muted-foreground: #64748b;
+  --accent: var(--university-gold);    /* Secondary alerts/accents default to Gold */
+  --accent-foreground: #0f172a;
+  --destructive: #ef4444;
+  --destructive-foreground: #ffffff;
+  --border: #e2e8f0;
+  --input: #e2e8f0;
+  --ring: var(--university-maroon);
+  --radius: 0.5rem; /* Set to 0rem if you picked Lyra (sharp/boxy) or 0.5rem for Vega */
 }
 
+/* 2. Tailwind v4 Inline Theme Registry Engine */
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: Arial, Helvetica, sans-serif;
+  
+  /* Expose your custom classes directly to Tailwind v4 class compilation */
+  --color-university-maroon: var(--university-maroon);
+  --color-university-gold: var(--university-gold);
+  --color-org-blue: var(--org-blue);
+  --color-org-black: var(--org-black);
+  
+  /* Bind Shadcn classes into utility loops */
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-border: var(--border);
+  --radius-md: var(--radius);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
+/* 3. Global HTML Elements Base Directives */
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
 }
