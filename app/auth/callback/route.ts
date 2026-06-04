@@ -3,8 +3,6 @@ import type { EmailOtpType } from '@supabase/supabase-js'
 import { cookies } from 'next/headers'
 import { NextResponse } from 'next/server'
 
-const ALLOWED_DOMAIN = '@cit.edu'
-
 export async function GET(request: Request) {
   const { searchParams, origin } = new URL(request.url)
   const next = searchParams.get('next') ?? '/'
@@ -50,12 +48,6 @@ export async function GET(request: Request) {
       return NextResponse.redirect(`${origin}/login?error=auth_failed`)
     }
     user = data.user
-  }
-
-  // Enforce institutional domain (skipped in dev)
-  if (process.env.NODE_ENV !== 'development' && !user?.email?.endsWith(ALLOWED_DOMAIN)) {
-    await supabase.auth.signOut()
-    return NextResponse.redirect(`${origin}/login?error=domain`)
   }
 
   const forwardedHost = request.headers.get('x-forwarded-host')

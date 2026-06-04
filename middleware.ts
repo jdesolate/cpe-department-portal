@@ -1,9 +1,7 @@
 import { createServerClient } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
 
-const ALLOWED_DOMAIN = '@cit.edu'
-
-// Routes requiring a valid @cit.edu login (any student)
+// Routes requiring a logged-in user (any account)
 const STUDENT_ROUTES = ['/freedom-wall/submit', '/schedule', '/feedback']
 
 // Routes requiring org_officer or admin role
@@ -47,10 +45,8 @@ export async function middleware(request: NextRequest) {
 
   if (!isProtected) return supabaseResponse
 
-  const domainOk = process.env.NODE_ENV === 'development' || user?.email?.endsWith(ALLOWED_DOMAIN)
-
-  // Not logged in or wrong domain → login page
-  if (!user || !domainOk) {
+  // Not logged in → login page
+  if (!user) {
     const loginUrl = new URL('/login', request.url)
     loginUrl.searchParams.set('next', path)
     return NextResponse.redirect(loginUrl)

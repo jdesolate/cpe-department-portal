@@ -18,6 +18,7 @@
 | 2026-06-04 | Session 0 | Auth infrastructure complete: `lib/supabase-server.ts`, `lib/auth.ts`, middleware rewrite (real JWT + `@supabase/ssr`), `/login` magic link page (switched from OAuth — no IT dept needed), `/auth/callback` route with `@cit.edu` domain enforcement, raffle moved to `(admin)` (org_officer/admin only), all DB tables created, all RLS policies applied, migration files recorded in `supabase/migrations/`. |
 | 2026-06-04 | Planning | Added P-05 FAQs, P-06 CpE Prospectus, P-07 Alumni Testimonials — all public, all assigned to Session 2. Added A-10/A-11 admin tools for managing them. |
 | 2026-06-04 | Session 1 | Admin dashboard shell and announcement CRUD complete. Note: dashboard files placed at `app/admin/` (not `app/(admin)/`) so URL `/admin/dashboard` aligns with middleware's `ADMIN_ROUTES = ['/admin']`. Sidebar client component in `app/admin/_components/AdminSidebar.tsx`. Server actions (create/update/delete/togglePin) in `app/admin/dashboard/announcements/actions.ts` — all call `revalidatePath('/')` so home page feed updates immediately. |
+| 2026-06-04 | Session 1 (cont.) | Forgot/reset password flow added: `/forgot-password` sends Supabase reset email with `redirectTo` pointing to `/auth/callback?next=/reset-password`; `/reset-password` calls `updateUser({password})` once the recovery session is active. `@cit.edu` domain enforcement removed from login page, callback route, and middleware for pre-production testing — any email can now sign in. Login page updated with "Forgot password?" link. |
 
 ---
 
@@ -60,9 +61,11 @@
 - [x] **F-02** Supabase RLS policies — correct public/student/admin read-write rules  
   > All policies applied via `supabase/migrations/20260604000001_rls_policies.sql`. Includes `get_user_role()` helper function.
 - [x] **F-03** Login page (`/login`) — institutional email sign-in  
-  > Built: `app/(auth)/login/page.tsx`. Changed from Google OAuth to **email magic link** — avoids Microsoft/Google IT admin consent entirely. Domain enforced in `/auth/callback`: non-`@cit.edu` emails are signed out immediately.
+  > Built: `app/(auth)/login/page.tsx`. Changed from Google OAuth to **email magic link** — avoids Microsoft/Google IT admin consent entirely. Domain enforced in `/auth/callback`: non-`@cit.edu` emails are signed out immediately.  
+  > **Updated Session 1:** `@cit.edu` domain check removed from login page and callback for pre-production testing. Forgot password link added. New pages: `app/(auth)/forgot-password/page.tsx`, `app/(auth)/reset-password/page.tsx`.
 - [x] **F-04** Auth middleware — replace mocked check with real Supabase JWT validation  
-  > Rewritten in `middleware.ts` using `@supabase/ssr` with real JWT. Domain: `@cit.edu`. Protects student routes (email only), `/raffle` (org_officer/admin), `/admin/*` (any role).
+  > Rewritten in `middleware.ts` using `@supabase/ssr` with real JWT. Domain: `@cit.edu`. Protects student routes (email only), `/raffle` (org_officer/admin), `/admin/*` (any role).  
+  > **Updated Session 1:** `@cit.edu` domain check removed from middleware — protected routes now require login only (any email). Re-add `ALLOWED_DOMAIN` check before production deployment.
 - [x] **F-05** Role system — `user_roles` table + role detection utility  
   > `user_roles` table created with RLS. `lib/auth.ts` exports `getUserRole()`, `hasRole(role)`, `isStudent()`. Assign roles manually in Supabase Table Editor.
 
@@ -138,9 +141,13 @@ Each session is scoped to avoid context overload. Paste this file into the chat 
 1. [x] Build admin dashboard shell (`/admin/dashboard`) — sidebar nav, role guard
 2. [x] Build announcement CRUD (`/admin/dashboard/announcements`) — form, list, pin toggle, expiry date, category select, delete
 3. [x] Verified announcements appear on the home page feed (home page feed unchanged, `revalidatePath('/')` called on every mutation)
+4. [x] Build forgot password page (`/forgot-password`) — sends Supabase reset email with callback pointing to `/reset-password`
+5. [x] Build reset password page (`/reset-password`) — verifies recovery session then calls `updateUser({password})`
+6. [x] Remove `@cit.edu` domain enforcement from login, callback, and middleware for pre-production testing
+7. [x] Add "Forgot password?" link to login page
 
 **Features:** A-00, A-01  
-**Files:** `app/admin/layout.tsx`, `app/admin/_components/AdminSidebar.tsx`, `app/admin/dashboard/page.tsx`, `app/admin/dashboard/announcements/page.tsx`, `app/admin/dashboard/announcements/actions.ts`, `app/admin/dashboard/announcements/AnnouncementsManager.tsx`
+**Files:** `app/admin/layout.tsx`, `app/admin/_components/AdminSidebar.tsx`, `app/admin/dashboard/page.tsx`, `app/admin/dashboard/announcements/page.tsx`, `app/admin/dashboard/announcements/actions.ts`, `app/admin/dashboard/announcements/AnnouncementsManager.tsx`, `app/(auth)/forgot-password/page.tsx`, `app/(auth)/reset-password/page.tsx`, `app/(auth)/login/page.tsx` (updated), `app/auth/callback/route.ts` (updated), `middleware.ts` (updated)
 
 ---
 

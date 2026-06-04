@@ -6,9 +6,6 @@ import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { Suspense, useState, useEffect, type FormEvent } from "react";
 
-const ALLOWED_DOMAIN = "@cit.edu";
-const DEV = process.env.NODE_ENV === "development";
-
 function LoginContent() {
   const searchParams = useSearchParams();
   const urlError = searchParams.get("error");
@@ -38,11 +35,6 @@ function LoginContent() {
     e.preventDefault();
     setInputError("");
 
-    if (!DEV && !email.trim().toLowerCase().endsWith(ALLOWED_DOMAIN)) {
-      setInputError("Must be a @cit.edu institutional email.");
-      return;
-    }
-
     setLoading(true);
     const { data, error } = await supabase.auth.signInWithPassword({
       email: email.trim().toLowerCase(),
@@ -60,13 +52,6 @@ function LoginContent() {
       } else {
         setInputError(error.message ?? "Sign-in failed. Please try again.");
       }
-      return;
-    }
-
-    // Enforce institutional domain after sign-in (skipped in dev)
-    if (!DEV && !data.user?.email?.endsWith(ALLOWED_DOMAIN)) {
-      await supabase.auth.signOut();
-      setInputError("Only @cit.edu accounts are allowed.");
       return;
     }
 
@@ -115,7 +100,7 @@ function LoginContent() {
                 type="email"
                 value={email}
                 onChange={(e) => { setEmail(e.target.value); setInputError(""); }}
-                placeholder={DEV ? "any email" : "yourname@cit.edu"}
+                placeholder="your@email.com"
                 required
                 className="w-full bg-bg-elevated border border-border-subtle rounded-xl px-4 py-3 text-sm text-text-primary font-mono placeholder:text-text-dim focus:outline-none focus:border-border-glow transition-colors"
               />
@@ -130,6 +115,11 @@ function LoginContent() {
               {inputError && (
                 <p className="text-red-400 font-mono text-xs px-1">{inputError}</p>
               )}
+              <div className="text-right">
+                <Link href="/forgot-password" className="text-text-dim hover:text-accent-glow font-mono text-[10px] transition-colors">
+                  Forgot password?
+                </Link>
+              </div>
             </div>
 
             <button
@@ -142,14 +132,7 @@ function LoginContent() {
           </form>
 
           {/* Footer */}
-          <div className="text-center space-y-2">
-            <p className="text-text-dim font-mono text-[10px] leading-relaxed">
-              {DEV ? (
-                <span className="text-grad-violet">DEV MODE · domain check off</span>
-              ) : (
-                <>Restricted to <span className="text-accent-glow">@cit.edu</span> accounts.</>
-              )}
-            </p>
+          <div className="text-center">
             <p className="text-text-dim font-mono text-[10px]">
               No account?{" "}
               <Link href="/signup" className="text-accent-glow hover:opacity-75 transition-opacity">
