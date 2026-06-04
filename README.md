@@ -1,80 +1,210 @@
-# 🌐 Computer Engineering Department Portal
+# CPE Department Portal
 
-A high-performance, responsive web portal engineered for a University Computer Engineering (CpE) Department serving 500–600 active students. This platform serves as a centralized digital hub, bridging the gap between official academic administration and vibrant student culture.
+A dark-tech web portal for a University Computer Engineering (CpE) Department — built for ~600 students by CPE students. Not a corporate university template. Has personality.
 
-Built using **Next.js 14+ (App Router)** and **Supabase**, this architecture uses an institutional email-gated authentication ecosystem requiring zero manual user registration for students, running entirely within free-tier cloud constraints.
-
----
-
-## 🛠️ Tech Stack & Hosting Architecture
-
-- **Frontend Framework:** Next.js 14+ (App Router) with Tailwind CSS
-- **Backend-as-a-Service:** Supabase (PostgreSQL)
-- **Real-Time Layer:** Supabase Realtime (WebSockets via PostgreSQL Replication)
-- **Authentication:** Supabase Auth via Google/Microsoft OAuth
-- **Storage:** Supabase Object Storage (for Faculty Headshots & Achievement Media)
-- **Deployment & Hosting:** Vercel (Frontend Serverless/Edge Hosting) & Supabase Cloud (Database & Edge Functions)
-- **Cost Efficiency:** 100% Free-Tier Compliant (Zero operational budget required)
+Built with **Next.js 16 (App Router)**, **React 19**, **Supabase**, and **Framer Motion**, running entirely on free-tier infrastructure.
 
 ---
 
-## 🔑 Key Features & Access Matrix
+## Design Philosophy
 
-The system structurally segregates public data from internal communications using Next.js Middleware to enforce institutional domain checks (e.g., `@youruniversity.edu.ph`).
+The portal is designed to feel like it was made *by* and *for* CPE students — not a generic academic template. Key principles:
 
-| Feature | Public Access (No Login) | Private Access (School Email Required) |
+- **Dark tech aesthetic** — deep space background (`#050b14`), electric blue/purple/cyan gradient accents, glassmorphism cards
+- **Personality over professionalism** — terminal-style labels, gradient text, tech motifs (dot grids, circuit lines), neon glow effects
+- **Motion with purpose** — scroll-triggered fade-ins, parallax hero, physics-based spin wheel; all GPU-accelerated (`transform`/`opacity` only), no layout jank
+- **Built to last** — ISR caching, WebSocket real-time, zero-maintenance serverless infrastructure
+
+---
+
+## Tech Stack
+
+| Layer | Technology |
+| :--- | :--- |
+| Framework | Next.js 16+ (App Router) · React 19 |
+| Styling | Tailwind CSS v4 · Custom dark design tokens |
+| Animation | Framer Motion (scroll parallax, entrance animations, wheel physics) |
+| Backend | Supabase (PostgreSQL, Auth, Realtime WebSockets, Edge Functions) |
+| Authentication | Supabase Auth via Google/Microsoft OAuth (institutional email domain) |
+| Deployment | Vercel (frontend) · Supabase Cloud (database + edge) |
+| Cost | 100% Free-Tier (Vercel Free + Supabase Free) |
+
+---
+
+## Features & Access Matrix
+
+| Feature | Public (No Login) | Students (School Email) |
 | :--- | :--- | :--- |
-| **Landing Page Portal** | View Hero branding, Public Announcements, and Achievements. | Accesses protected layout features, secure internal updates, and action components. |
-| **Announcements** | View general public notices, academic events, and job fairs. | View internal administrative memos, exam schedules, and room modifications. |
-| **Achievements** | View permanent historical archive of student/faculty wins. | *N/A (Always Public)* |
-| **Faculty Profiles** | View public biographies, research papers, and contact emails. | View real-time consultation hours and internal contact info. |
-| **Freedom Wall** | View a read-only stream of dynamically updating approved posts. | Access the submission form to post anonymously to the wall. |
+| Landing Page & Hero | Full access | + Authenticated layout features |
+| Department Bulletins | Public announcements | + Private/internal memos |
+| Achievements Archive | Full access | — |
+| Faculty Directory | Profiles, email, consultation hours | — |
+| Freedom Wall | Read-only live stream | Post anonymously (moderated) |
+| Events & Registration | Browse events; register for open events | Register for login-required events |
+| Wheel of Names (Raffle) | Watch live (spectator mode) | — |
+| Wheel of Names (Facilitator) | Unlock via PIN (`NEXT_PUBLIC_RAFFLE_PIN`) | — |
+| Admin Dashboard | — | Faculty/ICpEP officers only |
 
 ---
 
-## ⚙️ Core Component Business Logic
+## New Features (v2.0)
 
-### 1. High-Scale Architecture (500-600 Students)
-- **Static Site Generation (SSG) & Caching:** Public-facing directories (Faculty, Achievements) use Next.js Incremental Static Regeneration (`ISR`). Pages are served as raw HTML directly from Vercel's global Edge CDN, protecting the database from choking under high traffic spikes (e.g., enrollment weeks).
-- **Real-time Synchronization:** The Freedom Wall UI utilizes lightweight WebSockets via Supabase Realtime. New posts stream to active browser sessions instantly without requiring manual page refreshes or continuous database polling.
+### Event Registration System
+Department events (seminars, acquaintance parties, org activities) are managed in Supabase. Each event has a `registration_type`:
 
-### 2. Announcements & Achievements Engine
-- **Announcements:** Governed by a priority pinning flag (`is_pinned`), categorization tags, and an automated lifecycle engine (`expires_at`). Expired notices are filtered out of the active client feeds automatically.
-- **Achievements:** Permanent promotional records. They do not expire and are indexed by Academic Year (e.g., `2025-2026`) to support institutional accreditation audits.
+- **`open`** — anyone fills out Name + Student ID, no login needed
+- **`login_required`** — must sign in with institutional email first
 
-### 3. Integrated Faculty Portfolios (`/faculty/[slug]`)
-- Fully relational database layout. Faculty data tables link directly to the `achievements` table via a PostgreSQL junction table (`faculty_achievements`). Selecting an achievement dynamically traces back to involved faculty records, and vice versa.
+Registrations are stored in `event_registrations` with a unique constraint on `(event_id, student_id)` to prevent duplicates.
 
-### 4. Freedom Wall (Accountable Anonymity)
-- **AI Moderation Gate:** Incoming string inputs pass through a Supabase Edge Function hitting a text-moderation filter before hitting the database, automatically filtering out hard profanity, spam, or explicit toxicity.
-- **Accountable Anonymity:** Submissions mask user profiles completely from public views, student views, and peers. However, the database securely records the author's encrypted `user_id` in a hidden column. This exists strictly as an administrative fallback safety valve to address severe institutional code-of-conduct or legal incidents.
+**Required Supabase tables:**
+```sql
+CREATE TABLE events (
+  id               UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  slug             TEXT UNIQUE NOT NULL,
+  title            TEXT NOT NULL,
+  description      TEXT,
+  event_date       TIMESTAMPTZ,
+  location         TEXT,
+  capacity         INT,
+  registration_type TEXT CHECK (registration_type IN ('open', 'login_required')) DEFAULT 'open',
+  is_active        BOOLEAN DEFAULT true,
+  created_at       TIMESTAMPTZ DEFAULT now()
+);
+
+CREATE TABLE event_registrations (
+  id           UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  event_id     UUID REFERENCES events(id) ON DELETE CASCADE,
+  full_name    TEXT NOT NULL,
+  student_id   TEXT NOT NULL,
+  year_level   TEXT,
+  section      TEXT,
+  email        TEXT,
+  user_id      UUID REFERENCES auth.users(id),
+  registered_at TIMESTAMPTZ DEFAULT now(),
+  UNIQUE(event_id, student_id)
+);
+```
+
+### Wheel of Names (Raffle)
+A canvas-based spinning wheel for live department raffles, accessible at `/raffle`.
+
+- **Spectator mode** — anyone can watch the wheel (great for projecting during events)
+- **Facilitator mode** — unlocked with a 4-digit PIN (`NEXT_PUBLIC_RAFFLE_PIN` env var, default `1234`)
+- Facilitator can input names manually or import directly from any active event's registrations
+- Physics-based spin deceleration (exponential decay, ~0.991 multiplier per frame)
+- Winner overlay with confetti burst (`canvas-confetti`)
+- Remove-winner option for multi-round raffles
+- Spin history shows last 5 winners
 
 ---
 
-## 📁 Repository Directory Map
+## Animation System
 
-```text
-src/app/
+Three reusable wrapper components in `components/animations/`:
+
+| Component | Usage |
+| :--- | :--- |
+| `FadeInView` | Fade + slide-up on viewport enter. Props: `delay`, `y` offset |
+| `ParallaxLayer` | Scroll-driven Y transform. Prop: `speed` (±60px max) |
+| `StaggerChildren` | Staggered entrance for card grids. Prop: `stagger` delay |
+
+All animations use `transform`/`opacity` only and trigger `once: true` to prevent re-animation on scroll-up.
+
+---
+
+## Repository Structure
+
+```
+app/
+├── layout.tsx                      Global layout (dark nav + footer + ambient blobs)
+├── globals.css                     Design tokens (dark palette, glassmorphism utilities)
 │
-├── (public)/                 # Public routes (Cached on CDN, No Auth Required)
-│   ├── page.tsx              # Portal Home Dashboard (Announcements, Achievements, Wall Widget)
-│   ├── faculty/
-│   │   ├── page.tsx          # Faculty Directory Card grid
-│   │   └── [slug]/page.tsx   # Integrated Faculty Portfolio deep-page
-│   └── achievements/
-│       └── page.tsx          # Historical Wins timeline
+├── (public)/
+│   ├── page.tsx                    Home portal (hero, announcements, freedom wall)
+│   ├── faculty/page.tsx            Faculty directory
+│   ├── events/
+│   │   ├── page.tsx                Events listing
+│   │   └── [slug]/page.tsx         Event detail + registration form
+│   └── raffle/page.tsx             Wheel of Names (facilitator PIN gate)
 │
-├── (auth)/                   # Authentication handlers
-│   └── login/page.tsx        # School Email OAuth entry screen
+├── (auth)/login/page.tsx           OAuth entry screen
 │
-├── (student)/                # Domain-Protected Student paths (Middleware Gated)
-│   └── freedom-wall/
-│       └── submit/page.tsx   # Safe post submission page with moderation hook
+├── (student)/
+│   └── freedom-wall/submit/        Anonymous post submission
 │
-└── (admin)/                  # Role-Protected Administrative Dashboards
-    └── dashboard/
-        ├── page.tsx          # Shared management hub (ICpEP editors & Faculty)
-        ├── announcements/    # Manage announcement lifecycles and pinning
-        ├── profile-edit/     # Isolated faculty profile row editor (RLS Protected)
-        └── moderation/       # Freedom Wall manual post-moderation dashboard
-        
+└── (admin)/dashboard/              Faculty/ICpEP moderation + content management
+
+components/
+├── home/HeroSection.tsx            Client component — parallax hero
+├── DepartmentCarousel.tsx          Auto-rotating media carousel
+├── RealtimeFreedomWall.tsx         Live WebSocket freedom wall feed
+├── EventRegistrationForm.tsx       Event registration client form
+├── WheelOfNames.tsx                Canvas wheel + physics + confetti
+└── animations/
+    ├── FadeInView.tsx
+    ├── ParallaxLayer.tsx
+    └── StaggerChildren.tsx
+```
+
+---
+
+## Environment Variables
+
+```env
+NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
+NEXT_PUBLIC_RAFFLE_PIN=your-4-digit-pin    # default: 1234
+```
+
+---
+
+## Architecture Notes
+
+### Caching Strategy
+- Public pages use ISR (`revalidate = 300` for home, `120` for events) — served from Vercel Edge CDN, database not hit on every request
+- Freedom Wall uses Supabase Realtime WebSockets for live updates without polling
+
+### Freedom Wall — Accountable Anonymity
+Posts are publicly anonymous but the backend records the author's `auth.uid()` in a hidden column for admin traceability in code-of-conduct incidents. A Supabase Edge Function runs profanity/toxicity filtering before insertion. Do not remove this guard.
+
+### Scalability
+Designed for 500–600 concurrent student sessions on free-tier infrastructure. SSG/ISR prevents database overload during high-traffic periods (enrollment, event registration rushes).
+
+---
+
+## Continuing Development
+
+This project uses three documentation files that work together:
+
+| File | Purpose |
+| :--- | :--- |
+| `README.md` | Tech stack, architecture, and feature overview (this file) |
+| `HANDOVER.md` | Operational guide — infrastructure, security, maintenance |
+| `FEATURES.md` | **The living roadmap** — full feature registry, session plan, database schema |
+
+### Using AI to Continue This Project
+
+This project uses a session-based workflow designed to work with **any AI coding assistant** — Claude Code, Cursor, GitHub Copilot, ChatGPT, Gemini, or whatever tool is available to the next maintainer. The method is the same regardless of the tool.
+
+**Starting a new session:**
+
+1. Open your AI assistant inside this project directory (or paste relevant files if it has no file access)
+2. Say: *"Read FEATURES.md — we're working on Session N: [title]"*
+3. The AI will orient itself from that file and proceed without needing to re-explore the full codebase
+4. After the session, update the `[ ]` checkboxes in `FEATURES.md` to `[x]` for completed items
+
+**Keeping FEATURES.md current:**
+
+Whenever a feature is built, modified, or descoped, update `FEATURES.md` — not just the checkbox, but add a note if behavior changed from the original plan. Future developers (human or AI) will use it as the source of truth for what's done and what's not.
+
+---
+
+## Running Locally
+
+```bash
+npm install
+npm run dev       # http://localhost:3000
+npm run build     # production build
+npm run lint      # ESLint check
+```
