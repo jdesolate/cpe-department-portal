@@ -5,6 +5,7 @@ import { cn } from "@/lib/utils";
 import Link from "next/link";
 import Image from "next/image";
 import { createClient } from "@/lib/supabase-server";
+import { NavUserMenu } from "./_components/NavUserMenu";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
@@ -67,11 +68,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
               ))}
 
               {user ? (
-                <Link href="/admin/dashboard" className="ml-2">
-                  <button className="bg-linear-to-r from-grad-blue via-grad-violet to-grad-cyan text-white font-bold text-xs rounded-lg px-5 h-9 glow-btn hover:opacity-90 transition-all active:scale-95 cursor-pointer">
-                    Dashboard
-                  </button>
-                </Link>
+                <NavUserMenu />
               ) : (
                 <Link href="/login" className="ml-2">
                   <button className="bg-linear-to-r from-grad-blue via-grad-violet to-grad-cyan text-white font-bold text-xs rounded-lg px-5 h-9 glow-btn hover:opacity-90 transition-all active:scale-95 cursor-pointer">
@@ -87,11 +84,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
                 Events
               </Link>
               {user ? (
-                <Link href="/admin/dashboard">
-                  <button className="bg-linear-to-r from-grad-blue to-grad-cyan text-white font-bold text-[11px] rounded-lg px-3 h-8 active:scale-95 transition-all cursor-pointer">
-                    Dashboard
-                  </button>
-                </Link>
+                <NavUserMenu mobile />
               ) : (
                 <Link href="/login">
                   <button className="bg-linear-to-r from-grad-blue to-grad-cyan text-white font-bold text-[11px] rounded-lg px-3 h-8 active:scale-95 transition-all cursor-pointer">
