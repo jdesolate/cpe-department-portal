@@ -20,7 +20,7 @@ This portal is the digital hub for the CpE Department — announcements, faculty
 ### A. Supabase Console — Database & Auth
 
 - **PostgreSQL** with Row-Level Security (RLS) enforced at schema level
-- **Auth:** Institutional OAuth (Google/Microsoft). If the school updates its OAuth client credentials, update them in `Authentication → Providers` in the Supabase dashboard.
+- **Auth:** Email/password via Supabase Auth. Domain enforcement (`@cit.edu`) is applied in middleware, the login page, and the auth callback. In development, all domain checks are bypassed when `NODE_ENV === 'development'`.
 - **Realtime:** WebSocket channel `realtime-freedom-wall` streams approved freedom wall posts. If you disable Replication on the `freedom_wall` table, the live feed will break.
 
 ### B. Vercel Console — Hosting
@@ -37,8 +37,11 @@ This portal is the digital hub for the CpE Department — announcements, faculty
 | `NEXT_PUBLIC_SUPABASE_URL` | Supabase project API URL | `https://xxx.supabase.co` |
 | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Public anon key for client-side queries | `eyJhbGci...` |
 | `NEXT_PUBLIC_RAFFLE_PIN` | Facilitator PIN for the Wheel of Names raffle | `4321` |
+| `SUPABASE_SERVICE_ROLE_KEY` | Service role key for server-side admin account creation (`/signup`) | `eyJhbGci...` |
 
 **To change the raffle PIN:** Update `NEXT_PUBLIC_RAFFLE_PIN` in Vercel environment variables and redeploy. Default is `1234` if not set.
+
+**`SUPABASE_SERVICE_ROLE_KEY`:** Never expose this in client-side code. It is used only in server actions (`app/(auth)/signup/actions.ts`) to create accounts via the Supabase Admin API. Get it from Supabase dashboard → Settings → API → `service_role`.
 
 ---
 
@@ -95,6 +98,18 @@ CREATE TABLE event_registrations (
 
 ## 5. Feature Operations Guide
 
+### Managing Announcements
+
+Use the admin dashboard at `/admin/dashboard/announcements`. You must be signed in with an account that has the `admin` or `faculty` role in the `user_roles` table.
+
+- **Create** — click "New", fill in title, content, category, expiry date, pin/private flags
+- **Edit** — click the pencil icon on any row to pre-fill the form
+- **Pin** — click the pin icon to toggle pinned status; pinned announcements appear first on the home page
+- **Private** — private announcements are hidden from the public home feed; visible only to signed-in role-holders
+- **Delete** — click the trash icon (confirmation required)
+
+All mutations immediately revalidate the home page cache so changes appear within seconds.
+
 ### Managing Events
 
 1. Go to **Supabase Table Editor → `events`**
@@ -136,7 +151,14 @@ The Freedom Wall uses an *Accountable Anonymity* pattern:
 
 ### B. Data Isolation
 
-Next.js Middleware intercepts all routes under `(student)/` and `(admin)/` to verify the Supabase JWT. Visitors without a valid institutional email token are redirected to `/login`.
+Next.js Middleware intercepts all protected routes and verifies the Supabase JWT from the session cookie:
+- `/freedom-wall/submit`, `/schedule`, `/feedback` — require any authenticated `@cit.edu` user
+- `/raffle` — requires `org_officer` or `admin` role
+- `/admin/*` — requires any assigned role (`admin`, `faculty`, or `org_officer`)
+
+Unauthenticated visitors are redirected to `/login?next=[path]`. Users with the wrong role are redirected to `/`.
+
+The admin layout (`app/admin/layout.tsx`) performs a second server-side role check as a belt-and-suspenders guard. In `NODE_ENV === 'development'`, both the domain check and role check are bypassed to allow local testing with any email.
 
 ---
 

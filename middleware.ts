@@ -1,28 +1,88 @@
-// src/middleware.ts
-import { NextResponse } from 'next/server';
-import type { NextRequest } from 'next/server';
+import { createServerClient } from '@supabase/ssr'
+import { NextResponse, type NextRequest } from 'next/server'
 
-export function middleware(request: NextRequest) {
-  // 1. Identify if the student is targetting an internal protected directory route
-  const isProtectedRoute = request.nextUrl.pathname.startsWith('/internal') ||
-    request.nextUrl.pathname.startsWith('/freedom-wall/submit');
+const ALLOWED_DOMAIN = '@cit.edu'
 
-  if (isProtectedRoute) {
-    // 2. Mocking authentication checkpoint until Supabase Auth keys are linked.
-    // In production, we read the cookie/JWT token issued by Supabase Auth here.
-    const userEmail = "student@youruniversity.edu.ph"; // Simulated incoming user parameter
-    const allowedDomain = "@youruniversity.edu.ph";
+// Routes requiring a valid @cit.edu login (any student)
+const STUDENT_ROUTES = ['/freedom-wall/submit', '/schedule', '/feedback']
 
-    if (!userEmail || !userEmail.endsWith(allowedDomain)) {
-      // If unauthorized profile attempts breach, gracefully force back to landing portal
-      return NextResponse.redirect(new URL('/login', request.url));
+// Routes requiring org_officer or admin role
+const ORG_ROUTES = ['/raffle']
+
+// Routes requiring any assigned role (faculty / org_officer / admin)
+const ADMIN_ROUTES = ['/admin']
+
+export async function middleware(request: NextRequest) {
+  // Build a response we can attach refreshed session cookies to
+  let supabaseResponse = NextResponse.next({ request })
+
+  const supabase = createServerClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    {
+      cookies: {
+        getAll() {
+          return request.cookies.getAll()
+        },
+        setAll(cookiesToSet) {
+          cookiesToSet.forEach(({ name, value }) => request.cookies.set(name, value))
+          supabaseResponse = NextResponse.next({ request })
+          cookiesToSet.forEach(({ name, value, options }) =>
+            supabaseResponse.cookies.set(name, value, options)
+          )
+        },
+      },
+    }
+  )
+
+  // IMPORTANT: Do not add logic between createServerClient and getUser().
+  // getUser() refreshes the session cookie — any early return would drop it.
+  const { data: { user } } = await supabase.auth.getUser()
+
+  const path = request.nextUrl.pathname
+  const isStudentRoute = STUDENT_ROUTES.some(r => path.startsWith(r))
+  const isOrgRoute = ORG_ROUTES.some(r => path.startsWith(r))
+  const isAdminRoute = ADMIN_ROUTES.some(r => path.startsWith(r))
+  const isProtected = isStudentRoute || isOrgRoute || isAdminRoute
+
+  if (!isProtected) return supabaseResponse
+
+  const domainOk = process.env.NODE_ENV === 'development' || user?.email?.endsWith(ALLOWED_DOMAIN)
+
+  // Not logged in or wrong domain → login page
+  if (!user || !domainOk) {
+    const loginUrl = new URL('/login', request.url)
+    loginUrl.searchParams.set('next', path)
+    return NextResponse.redirect(loginUrl)
+  }
+
+  // Org/admin routes also require a role assignment
+  if (isOrgRoute || isAdminRoute) {
+    const { data: roleData } = await supabase
+      .from('user_roles')
+      .select('role')
+      .eq('user_id', user.id)
+      .single()
+
+    const role = roleData?.role as string | undefined
+
+    const isDev = process.env.NODE_ENV === 'development'
+
+    if (!isDev && isOrgRoute && !['org_officer', 'admin'].includes(role ?? '')) {
+      return NextResponse.redirect(new URL('/', request.url))
+    }
+
+    if (!isDev && isAdminRoute && !role) {
+      return NextResponse.redirect(new URL('/', request.url))
     }
   }
 
-  return NextResponse.next();
+  return supabaseResponse
 }
 
-// Configure exactly which paths the middleware should watch
 export const config = {
-  matcher: ['/internal/:path*', '/freedom-wall/submit'],
-};
+  matcher: [
+    // Run on all routes except Next.js internals and static files
+    '/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
+  ],
+}

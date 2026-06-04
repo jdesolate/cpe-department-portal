@@ -25,7 +25,7 @@ The portal is designed to feel like it was made *by* and *for* CPE students — 
 | Styling | Tailwind CSS v4 · Custom dark design tokens |
 | Animation | Framer Motion (scroll parallax, entrance animations, wheel physics) |
 | Backend | Supabase (PostgreSQL, Auth, Realtime WebSockets, Edge Functions) |
-| Authentication | Supabase Auth via Google/Microsoft OAuth (institutional email domain) |
+| Authentication | Supabase Auth — email/password with `@cit.edu` domain enforcement (dev bypass available) |
 | Deployment | Vercel (frontend) · Supabase Cloud (database + edge) |
 | Cost | 100% Free-Tier (Vercel Free + Supabase Free) |
 
@@ -43,7 +43,8 @@ The portal is designed to feel like it was made *by* and *for* CPE students — 
 | Events & Registration | Browse events; register for open events | Register for login-required events |
 | Wheel of Names (Raffle) | Watch live (spectator mode) | — |
 | Wheel of Names (Facilitator) | Unlock via PIN (`NEXT_PUBLIC_RAFFLE_PIN`) | — |
-| Admin Dashboard | — | Faculty/ICpEP officers only |
+| Admin Dashboard (`/admin/dashboard`) | — | Faculty/ICpEP officers/admins only |
+| Announcement Management | — | Admin/faculty — create, edit, pin, delete bulletins |
 
 ---
 
@@ -123,17 +124,28 @@ app/
 ├── (public)/
 │   ├── page.tsx                    Home portal (hero, announcements, freedom wall)
 │   ├── faculty/page.tsx            Faculty directory
-│   ├── events/
-│   │   ├── page.tsx                Events listing
-│   │   └── [slug]/page.tsx         Event detail + registration form
-│   └── raffle/page.tsx             Wheel of Names (facilitator PIN gate)
+│   └── events/
+│       ├── page.tsx                Events listing
+│       └── [slug]/page.tsx         Event detail + registration form
 │
-├── (auth)/login/page.tsx           OAuth entry screen
+├── (auth)/
+│   ├── login/page.tsx              Email/password sign-in
+│   └── signup/page.tsx             Account creation (dev utility, uses service role key)
+│
+├── auth/callback/route.ts          OAuth/magic-link callback (kept for future use)
 │
 ├── (student)/
 │   └── freedom-wall/submit/        Anonymous post submission
 │
-└── (admin)/dashboard/              Faculty/ICpEP moderation + content management
+├── (admin)/
+│   └── raffle/page.tsx             Wheel of Names (org_officer/admin, URL: /raffle)
+│
+└── admin/                          Role-protected admin area
+    ├── layout.tsx                  Sidebar shell + server-side role guard
+    ├── _components/AdminSidebar.tsx Active-link nav, logout button
+    └── dashboard/
+        ├── page.tsx                Overview — stats, recent announcements
+        └── announcements/          Full CRUD — create, edit, pin, delete bulletins
 
 components/
 ├── home/HeroSection.tsx            Client component — parallax hero
@@ -154,7 +166,8 @@ components/
 ```env
 NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
-NEXT_PUBLIC_RAFFLE_PIN=your-4-digit-pin    # default: 1234
+NEXT_PUBLIC_RAFFLE_PIN=your-4-digit-pin       # default: 1234
+SUPABASE_SERVICE_ROLE_KEY=your-service-role   # required for /signup account creation
 ```
 
 ---

@@ -4,6 +4,7 @@ import { Inter } from "next/font/google";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import Image from "next/image";
+import { createClient } from "@/lib/supabase-server";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
@@ -12,7 +13,9 @@ export const metadata: Metadata = {
   description: "Digital Hub for Computer Engineering Students & Faculty",
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
   return (
     <html lang="en" className={cn("font-sans scroll-smooth", inter.variable)}>
       <body className="bg-bg-base text-text-primary flex flex-col min-h-screen antialiased">
@@ -63,11 +66,19 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 </Link>
               ))}
 
-              <Link href="/login" className="ml-2">
-                <button className="bg-linear-to-r from-grad-blue via-grad-violet to-grad-cyan text-white font-bold text-xs rounded-lg px-5 h-9 glow-btn hover:opacity-90 transition-all active:scale-95 cursor-pointer">
-                  Student Login
-                </button>
-              </Link>
+              {user ? (
+                <Link href="/admin/dashboard" className="ml-2">
+                  <button className="bg-linear-to-r from-grad-blue via-grad-violet to-grad-cyan text-white font-bold text-xs rounded-lg px-5 h-9 glow-btn hover:opacity-90 transition-all active:scale-95 cursor-pointer">
+                    Dashboard
+                  </button>
+                </Link>
+              ) : (
+                <Link href="/login" className="ml-2">
+                  <button className="bg-linear-to-r from-grad-blue via-grad-violet to-grad-cyan text-white font-bold text-xs rounded-lg px-5 h-9 glow-btn hover:opacity-90 transition-all active:scale-95 cursor-pointer">
+                    Login
+                  </button>
+                </Link>
+              )}
             </nav>
 
             {/* Mobile Nav */}
@@ -75,11 +86,19 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               <Link href="/events" className="text-xs text-text-muted font-semibold px-2 py-1.5 hover:bg-bg-surface rounded-md transition-colors">
                 Events
               </Link>
-              <Link href="/login">
-                <button className="bg-linear-to-r from-grad-blue to-grad-cyan text-white font-bold text-[11px] rounded-lg px-3 h-8 active:scale-95 transition-all cursor-pointer">
-                  Login
-                </button>
-              </Link>
+              {user ? (
+                <Link href="/admin/dashboard">
+                  <button className="bg-linear-to-r from-grad-blue to-grad-cyan text-white font-bold text-[11px] rounded-lg px-3 h-8 active:scale-95 transition-all cursor-pointer">
+                    Dashboard
+                  </button>
+                </Link>
+              ) : (
+                <Link href="/login">
+                  <button className="bg-linear-to-r from-grad-blue to-grad-cyan text-white font-bold text-[11px] rounded-lg px-3 h-8 active:scale-95 transition-all cursor-pointer">
+                    Login
+                  </button>
+                </Link>
+              )}
             </div>
 
           </div>
