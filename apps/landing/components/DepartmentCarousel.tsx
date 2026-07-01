@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { Badge } from "@cpe/shared/components/ui/badge";
+import Tag from "@/components/ui/Tag";
 
 interface MediaItem {
   id: string;
@@ -70,7 +70,7 @@ export default function DepartmentCarousel() {
       onMouseEnter={() => setIsPlaying(false)}
       onMouseLeave={() => setIsPlaying(true)}
     >
-      <div className="relative h-115 md:h-130 w-full overflow-hidden rounded-2xl bg-bg-elevated border border-border-subtle group/carousel glow-border">
+      <div className="relative h-115 md:h-130 w-full overflow-hidden rounded-[4px] bg-panel border border-line group/carousel">
 
         {DEFAULT_MEDIA.map((item, index) => (
           <div
@@ -98,16 +98,14 @@ export default function DepartmentCarousel() {
               />
             )}
 
-            <div className="absolute inset-0 bg-linear-to-t from-bg-base via-bg-base/30 to-transparent" />
+            <div className="absolute inset-0 bg-linear-to-t from-ink via-ink/30 to-transparent" />
 
             <div className="absolute bottom-0 inset-x-0 p-6 md:p-10 z-20 max-w-3xl space-y-3">
-              <Badge className="bg-accent-glow/15 text-accent-glow border border-accent-glow/30 font-mono text-[10px] uppercase font-bold tracking-widest px-2.5 py-1 rounded-sm">
-                {item.tag}
-              </Badge>
-              <h2 className="text-2xl md:text-4xl font-black text-text-primary tracking-tight leading-tight">
+              <Tag>{item.tag}</Tag>
+              <h2 className="text-2xl md:text-4xl font-display font-semibold text-paper tracking-tight leading-tight">
                 {item.title}
               </h2>
-              <p className="text-sm md:text-base text-text-muted font-light max-w-2xl leading-relaxed">
+              <p className="text-sm md:text-base text-gray font-light max-w-2xl leading-relaxed">
                 {item.subtitle}
               </p>
             </div>
@@ -116,28 +114,28 @@ export default function DepartmentCarousel() {
 
         <button
           onClick={() => setActiveIndex((prev) => (prev - 1 + DEFAULT_MEDIA.length) % DEFAULT_MEDIA.length)}
-          className="absolute left-4 top-1/2 -translate-y-1/2 z-30 h-10 w-10 flex items-center justify-center rounded-full glass-card text-text-primary opacity-0 group-hover/carousel:opacity-100 transition-all duration-200 border border-border-subtle hover:border-border-glow active:scale-90 cursor-pointer"
+          className="absolute left-4 top-1/2 -translate-y-1/2 z-30 h-10 w-10 flex items-center justify-center rounded-full bg-panel text-paper opacity-0 group-hover/carousel:opacity-100 transition-all duration-200 border border-line hover:border-gold active:scale-90 cursor-pointer"
           aria-label="Previous slide"
         >
           ←
         </button>
         <button
           onClick={() => setActiveIndex((prev) => (prev + 1) % DEFAULT_MEDIA.length)}
-          className="absolute right-4 top-1/2 -translate-y-1/2 z-30 h-10 w-10 flex items-center justify-center rounded-full glass-card text-text-primary opacity-0 group-hover/carousel:opacity-100 transition-all duration-200 border border-border-subtle hover:border-border-glow active:scale-90 cursor-pointer"
+          className="absolute right-4 top-1/2 -translate-y-1/2 z-30 h-10 w-10 flex items-center justify-center rounded-full bg-panel text-paper opacity-0 group-hover/carousel:opacity-100 transition-all duration-200 border border-line hover:border-gold active:scale-90 cursor-pointer"
           aria-label="Next slide"
         >
           →
         </button>
 
-        <div className="absolute top-4 right-4 z-30 flex items-center gap-1.5 glass-card px-3 py-1.5 rounded-full border border-border-subtle">
+        <div className="absolute top-4 right-4 z-30 flex items-center gap-2 bg-panel/90 px-3 py-2 rounded-[4px] border border-line">
           {DEFAULT_MEDIA.map((_, index) => (
             <button
               key={index}
               onClick={() => setActiveIndex(index)}
-              className={`h-1.5 transition-all duration-300 rounded-full cursor-pointer ${
+              className={`w-2 h-2 rotate-45 transition-all duration-300 cursor-pointer ${
                 index === activeIndex
-                  ? "w-6 bg-accent-glow"
-                  : "w-1.5 bg-border-subtle hover:bg-text-dim"
+                  ? "bg-gold border border-gold"
+                  : "bg-transparent border border-line hover:border-gray"
               }`}
               aria-label={`Slide ${index + 1}`}
             />

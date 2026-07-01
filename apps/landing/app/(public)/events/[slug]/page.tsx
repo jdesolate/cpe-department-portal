@@ -1,8 +1,10 @@
 import { supabase } from "@cpe/shared/lib/supabase";
-import { Badge } from "@cpe/shared/components/ui/badge";
 import { notFound } from "next/navigation";
 import FadeInView from "@cpe/shared/components/animations/FadeInView";
 import EventRegistrationForm from "@/components/EventRegistrationForm";
+import Tag from "@/components/ui/Tag";
+import TraceDivider from "@/components/ui/TraceDivider";
+import Button from "@/components/ui/Button";
 
 export const revalidate = 60;
 
@@ -37,64 +39,59 @@ export default async function EventDetailPage({ params }: Props) {
       <div className="max-w-5xl mx-auto">
 
         <FadeInView>
-          <p className="font-mono text-accent-glow text-xs uppercase tracking-widest mb-4">
-            // events / {slug}
-          </p>
+          <TraceDivider label={`Events / ${slug}`} className="mb-6 max-w-xs" />
 
           <div className="grid grid-cols-1 lg:grid-cols-5 gap-10">
 
             <div className="lg:col-span-3 space-y-6">
-              <div className="glass-card glow-border rounded-2xl p-7 space-y-5">
+              <div className="via-card p-7 space-y-5">
 
                 <div className="flex flex-wrap gap-2">
-                  <Badge
-                    className={
-                      isLoginRequired
-                        ? "bg-grad-violet/15 text-grad-violet border border-grad-violet/30 text-[10px] font-mono uppercase"
-                        : "bg-emerald-500/15 text-emerald-400 border border-emerald-500/25 text-[10px] font-mono uppercase"
-                    }
+                  <Tag
+                    tone="maroon"
+                    className={isLoginRequired ? "" : "border-emerald-500/40 text-emerald-400"}
                   >
                     {isLoginRequired ? "Login Required" : "Open Registration"}
-                  </Badge>
+                  </Tag>
                   {isFull && (
-                    <Badge className="bg-red-500/15 text-red-400 border border-red-500/25 text-[10px] font-mono uppercase">
+                    <Tag tone="maroon" className="border-red-500/40 text-red-400">
                       Full
-                    </Badge>
+                    </Tag>
                   )}
                 </div>
 
-                <h1 className="text-3xl md:text-4xl font-black text-text-primary leading-tight">
+                <h1 className="text-3xl md:text-4xl font-display font-semibold text-paper leading-tight">
                   {event.title}
                 </h1>
 
                 {event.description && (
-                  <p className="text-text-muted font-light leading-relaxed">
+                  <p className="text-gray font-light leading-relaxed">
                     {event.description}
                   </p>
                 )}
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
                   {date && (
-                    <div className="bg-bg-elevated/60 rounded-xl px-4 py-3 border border-border-subtle">
-                      <p className="text-[10px] font-mono text-text-dim uppercase tracking-widest mb-1">Date & Time</p>
-                      <p className="text-sm font-semibold text-text-primary">
+                    <div className="bg-panel-2/60 rounded-[4px] px-4 py-3 border border-line">
+                      <p className="text-[10px] font-mono text-gray uppercase tracking-widest mb-1">Date & Time</p>
+                      <p className="text-sm font-semibold text-paper">
                         {date.toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric", year: "numeric" })}
                       </p>
-                      <p className="text-xs text-text-muted font-mono">
+                      <p className="text-xs text-gray font-mono">
                         {date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
                       </p>
                     </div>
                   )}
                   {event.location && (
-                    <div className="bg-bg-elevated/60 rounded-xl px-4 py-3 border border-border-subtle">
-                      <p className="text-[10px] font-mono text-text-dim uppercase tracking-widest mb-1">Location</p>
-                      <p className="text-sm font-semibold text-text-primary">📍 {event.location}</p>
+                    <div className="bg-panel-2/60 rounded-[4px] px-4 py-3 border border-line">
+                      <p className="text-[10px] font-mono text-gray uppercase tracking-widest mb-1">Location</p>
+                      <p className="text-sm font-semibold text-paper">{event.location}</p>
                     </div>
                   )}
                   {event.capacity && (
-                    <div className="bg-bg-elevated/60 rounded-xl px-4 py-3 border border-border-subtle">
-                      <p className="text-[10px] font-mono text-text-dim uppercase tracking-widest mb-1">Capacity</p>
-                      <p className="text-sm font-semibold text-text-primary">
+                    <div className="bg-panel-2/60 rounded-[4px] px-4 py-3 border border-line">
+                      <p className="text-[10px] font-mono text-gray uppercase tracking-widest mb-1">Capacity</p>
+                      <p className="text-sm font-semibold text-paper">
                         {registrationCount ?? 0} / {event.capacity} registered
                       </p>
                       {spotsLeft !== null && spotsLeft > 0 && (
@@ -108,22 +105,20 @@ export default async function EventDetailPage({ params }: Props) {
 
             <div className="lg:col-span-2">
               {isFull ? (
-                <div className="glass-card glow-border rounded-2xl p-8 text-center space-y-3">
-                  <p className="text-3xl opacity-30">🔒</p>
-                  <p className="text-text-muted font-mono text-sm">
+                <div className="via-card p-8 text-center space-y-3">
+                  <p className="text-gray font-mono text-sm">
                     Registrations are full for this event.
                   </p>
                 </div>
               ) : isLoginRequired ? (
-                <div className="glass-card glow-border rounded-2xl p-8 text-center space-y-4">
-                  <p className="text-3xl opacity-30">🔐</p>
-                  <p className="text-text-muted font-mono text-sm">
+                <div className="via-card p-8 text-center space-y-4">
+                  <p className="text-gray font-mono text-sm">
                     Sign in with your school email to register.
                   </p>
                   <a href={process.env.NEXT_PUBLIC_INTERNAL_APP_URL ?? "#"}>
-                    <button className="w-full bg-linear-to-r from-grad-blue via-grad-violet to-grad-cyan text-white font-bold text-sm h-11 rounded-xl glow-btn hover:opacity-90 transition-all cursor-pointer mt-2">
+                    <Button variant="solid" className="w-full mt-2">
                       Student Login →
-                    </button>
+                    </Button>
                   </a>
                 </div>
               ) : (

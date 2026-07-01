@@ -1,5 +1,6 @@
 import { supabase } from "@cpe/shared/lib/supabase";
-import { Badge } from "@cpe/shared/components/ui/badge";
+import Tag from "@/components/ui/Tag";
+import TraceDivider from "@/components/ui/TraceDivider";
 import Link from "next/link";
 import FadeInView from "@cpe/shared/components/animations/FadeInView";
 import StaggerChildren from "@cpe/shared/components/animations/StaggerChildren";
@@ -18,14 +19,11 @@ export default async function EventsPage() {
       <div className="max-w-6xl mx-auto">
 
         <FadeInView className="mb-14 text-center md:text-left">
-          <p className="font-mono text-accent-glow text-xs uppercase tracking-widest mb-3">
-            // upcoming.events
-          </p>
-          <h1 className="text-4xl md:text-5xl font-black tracking-tight text-text-primary">
-            Department{" "}
-            <span className="gradient-text">Events</span>
+          <TraceDivider label="Upcoming Events" className="mb-4 max-w-xs mx-auto md:mx-0" />
+          <h1 className="text-4xl md:text-5xl font-display font-semibold tracking-tight text-paper">
+            Department <span className="text-gold">Events</span>
           </h1>
-          <p className="text-text-muted mt-3 text-base md:text-lg max-w-2xl font-light leading-relaxed">
+          <p className="text-gray mt-3 text-base md:text-lg max-w-2xl font-light leading-relaxed">
             Seminars, acquaintance parties, org events, and more. Register below to secure your slot.
           </p>
         </FadeInView>
@@ -38,64 +36,57 @@ export default async function EventsPage() {
 
               return (
                 <Link key={event.id} href={`/events/${event.slug}`} className="group block">
-                  <div className="glass-card glow-border rounded-2xl overflow-hidden flex flex-col h-full hover:border-border-glow hover:shadow-[0_0_32px_rgba(59,130,246,0.1)] transition-all duration-300">
+                  <div className="via-card overflow-hidden flex flex-col h-full hover:border-gold/40 transition-all duration-300">
 
-                    <div className="px-5 py-3 border-b border-border-subtle flex items-center justify-between">
+                    <div className="px-5 py-3 border-b border-line flex items-center justify-between">
                       {date ? (
                         <div className="flex items-center gap-3">
                           <div className="text-center">
-                            <p className="text-2xl font-black gradient-text leading-none">
+                            <p className="text-2xl font-display font-semibold text-gold leading-none">
                               {date.getDate()}
                             </p>
-                            <p className="text-[10px] font-mono text-text-dim uppercase tracking-wider">
+                            <p className="text-[10px] font-mono text-gray uppercase tracking-wider">
                               {date.toLocaleString("en-US", { month: "short" })}
                             </p>
                           </div>
-                          <div className="h-8 w-px bg-border-subtle" />
-                          <p className="text-xs font-mono text-text-muted">
+                          <div className="h-8 w-px bg-line" />
+                          <p className="text-xs font-mono text-gray">
                             {date.toLocaleString("en-US", { weekday: "long" })} &middot;{" "}
                             {date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
                           </p>
                         </div>
                       ) : (
-                        <p className="text-xs font-mono text-text-dim">Date TBA</p>
+                        <p className="text-xs font-mono text-gray">Date TBA</p>
                       )}
-                      <Badge
-                        className={
-                          isLoginRequired
-                            ? "bg-grad-violet/15 text-grad-violet border border-grad-violet/30 text-[9px] font-mono uppercase px-2 py-0.5 shrink-0"
-                            : "bg-emerald-500/15 text-emerald-400 border border-emerald-500/25 text-[9px] font-mono uppercase px-2 py-0.5 shrink-0"
-                        }
+                      <Tag
+                        tone="maroon"
+                        className={isLoginRequired ? "shrink-0" : "shrink-0 border-emerald-500/40 text-emerald-400"}
                       >
                         {isLoginRequired ? "Login Required" : "Open"}
-                      </Badge>
+                      </Tag>
                     </div>
 
                     <div className="p-5 flex flex-col flex-1 gap-3">
-                      <h3 className="font-bold text-text-primary text-base leading-snug group-hover:gradient-text transition-all duration-300">
+                      <h3 className="font-display font-semibold text-paper text-base leading-snug group-hover:text-gold transition-colors duration-300">
                         {event.title}
                       </h3>
                       {event.description && (
-                        <p className="text-sm text-text-muted font-light leading-relaxed line-clamp-2">
+                        <p className="text-sm text-gray font-light leading-relaxed line-clamp-2">
                           {event.description}
                         </p>
                       )}
-                      <div className="mt-auto pt-3 border-t border-border-subtle flex items-center justify-between">
+                      <div className="mt-auto pt-3 border-t border-line flex items-center justify-between">
                         {event.location && (
-                          <p className="text-[11px] font-mono text-text-dim">
-                            📍 {event.location}
-                          </p>
+                          <p className="text-[11px] font-mono text-gray">{event.location}</p>
                         )}
                         {event.capacity && (
-                          <p className="text-[11px] font-mono text-text-dim">
-                            ◎ {event.capacity} slots
-                          </p>
+                          <p className="text-[11px] font-mono text-gray">{event.capacity} slots</p>
                         )}
                       </div>
                     </div>
 
                     <div className="px-5 pb-5">
-                      <div className="w-full bg-linear-to-r from-grad-blue/10 via-grad-violet/10 to-grad-cyan/10 border border-border-glow text-text-primary text-sm font-semibold h-10 rounded-xl flex items-center justify-center gap-2 group-hover:from-grad-blue/20 group-hover:to-grad-cyan/20 transition-all">
+                      <div className="w-full bg-transparent border border-gold/40 text-paper text-sm font-semibold h-10 rounded-[4px] flex items-center justify-center gap-2 group-hover:bg-gold/10 group-hover:border-gold transition-all">
                         Register Now →
                       </div>
                     </div>
@@ -106,10 +97,9 @@ export default async function EventsPage() {
           </StaggerChildren>
         ) : (
           <FadeInView>
-            <div className="glass-card glow-border rounded-2xl text-center py-20">
-              <p className="text-4xl mb-4 opacity-20">📅</p>
-              <p className="text-text-dim font-mono text-sm">No upcoming events scheduled.</p>
-              <p className="text-text-dim font-mono text-xs mt-1 opacity-60">Check back soon.</p>
+            <div className="via-card text-center py-20">
+              <p className="text-gray font-mono text-sm">No upcoming events scheduled.</p>
+              <p className="text-gray font-mono text-xs mt-1 opacity-60">Check back soon.</p>
             </div>
           </FadeInView>
         )}

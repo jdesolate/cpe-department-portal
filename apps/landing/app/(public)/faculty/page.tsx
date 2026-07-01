@@ -1,4 +1,5 @@
-import { Badge } from "@cpe/shared/components/ui/badge";
+import Tag from "@/components/ui/Tag";
+import TraceDivider, { DiamondBullet } from "@/components/ui/TraceDivider";
 import StaggerChildren from "@cpe/shared/components/animations/StaggerChildren";
 import FadeInView from "@cpe/shared/components/animations/FadeInView";
 
@@ -38,15 +39,12 @@ export default function FacultyDirectory() {
       <div className="max-w-6xl mx-auto">
 
         <FadeInView className="mb-14 text-center md:text-left">
-          <p className="font-mono text-accent-glow text-xs uppercase tracking-widest mb-3">
-            // personnel.directory
-          </p>
-          <h1 className="text-4xl md:text-5xl font-black tracking-tight text-text-primary">
-            Faculty &{" "}
-            <span className="gradient-text">Roster</span>
+          <TraceDivider label="Personnel Directory" className="mb-4 max-w-xs mx-auto md:mx-0" />
+          <h1 className="text-4xl md:text-5xl font-display font-semibold tracking-tight text-paper">
+            Faculty & <span className="text-gold">Roster</span>
           </h1>
-          <p className="text-text-muted mt-3 text-base md:text-lg max-w-2xl font-light leading-relaxed">
-            The engineers, researchers, and professors driving our Computer Engineering academic tracks.
+          <p className="text-gray mt-3 text-base md:text-lg max-w-2xl font-light leading-relaxed">
+            The engineers, researchers, and professors driving our Computer Engineering programs.
           </p>
         </FadeInView>
 
@@ -54,48 +52,43 @@ export default function FacultyDirectory() {
           {facultyMembers.map((prof) => (
             <div
               key={prof.id}
-              className="glass-card glow-border rounded-2xl overflow-hidden group hover:border-border-glow hover:shadow-[0_0_32px_rgba(59,130,246,0.12)] transition-all duration-300 cursor-pointer flex flex-col"
+              className="via-card overflow-hidden group hover:border-gold/40 transition-all duration-300 cursor-pointer flex flex-col"
             >
               <div className="px-6 pt-8 pb-4 flex items-center gap-4">
-                <div className="relative shrink-0">
-                  <div className="absolute inset-0 rounded-full bg-linear-to-br from-grad-blue via-grad-violet to-grad-cyan blur-sm opacity-50 group-hover:opacity-80 transition-opacity" />
-                  <div className="relative w-14 h-14 rounded-full bg-linear-to-br from-grad-blue via-grad-violet to-grad-cyan flex items-center justify-center text-white font-black text-lg">
-                    {prof.initials}
-                  </div>
+                <div className="w-14 h-14 rounded-full bg-maroon-bright flex items-center justify-center text-paper font-display font-semibold text-lg shrink-0">
+                  {prof.initials}
                 </div>
                 <div>
-                  <h3 className="font-bold text-text-primary leading-tight group-hover:gradient-text transition-all duration-300">
+                  <h3 className="font-display font-semibold text-paper leading-tight group-hover:text-gold transition-colors duration-300">
                     {prof.name}
                   </h3>
-                  <p className="text-[11px] font-mono text-text-dim uppercase tracking-wide mt-0.5">
+                  <p className="text-[11px] font-mono text-gray uppercase tracking-wide mt-0.5">
                     {prof.designation}
                   </p>
                 </div>
               </div>
 
               <div className="px-6 pb-4">
-                <Badge className="bg-grad-violet/10 text-grad-violet border border-grad-violet/25 text-[11px] font-medium px-2.5 py-1 rounded-lg pointer-events-none">
-                  ⬡ {prof.specialization}
-                </Badge>
+                <Tag tone="muted">{prof.specialization}</Tag>
               </div>
 
-              <div className="px-6 pb-6 mt-auto space-y-2.5 text-xs border-t border-border-subtle pt-4">
+              <div className="px-6 pb-6 mt-auto space-y-2.5 text-xs border-t border-line pt-4">
                 <div className="flex items-center gap-2">
-                  <span className="text-text-dim font-mono">@</span>
+                  <span className="text-gray font-mono">@</span>
                   <a
                     href={`mailto:${prof.email}`}
-                    className="text-accent-glow hover:opacity-80 transition-opacity font-mono truncate"
+                    className="text-gold hover:text-gold-dim transition-colors font-mono truncate"
                   >
                     {prof.email}
                   </a>
                 </div>
-                <div className="flex items-start gap-2 bg-bg-elevated/60 p-2.5 rounded-lg border border-border-subtle">
-                  <span className="text-text-dim mt-0.5 font-mono text-[10px]">◷</span>
+                <div className="flex items-start gap-2 bg-panel-2/60 p-2.5 rounded-[4px] border border-line">
+                  <DiamondBullet className="mt-0.5" />
                   <div>
-                    <span className="font-mono font-semibold text-text-dim block text-[10px] uppercase tracking-wider">
+                    <span className="font-mono font-semibold text-gray block text-[10px] uppercase tracking-wider">
                       Consultation
                     </span>
-                    <span className="text-text-muted font-light text-[11px]">{prof.consultation}</span>
+                    <span className="text-gray font-light text-[11px]">{prof.consultation}</span>
                   </div>
                 </div>
               </div>

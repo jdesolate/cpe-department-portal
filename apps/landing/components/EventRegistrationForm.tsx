@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { createClient } from "@supabase/supabase-js";
+import Button from "@/components/ui/Button";
 
 const supabaseClient = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -55,30 +56,28 @@ export default function EventRegistrationForm({ eventId, eventTitle }: Props) {
 
   if (status === "success") {
     return (
-      <div className="glass-card glow-border rounded-2xl p-8 text-center space-y-4">
-        <div className="text-5xl animate-float">🎉</div>
-        <h3 className="text-xl font-black gradient-text">You&apos;re Registered!</h3>
-        <p className="text-text-muted text-sm font-light max-w-xs mx-auto">
-          Your slot for <span className="text-text-primary font-semibold">{eventTitle}</span> has been confirmed.
+      <div className="via-card p-8 text-center space-y-4">
+        <h3 className="text-xl font-display font-semibold text-gold">You&apos;re Registered!</h3>
+        <p className="text-gray text-sm font-light max-w-xs mx-auto">
+          Your slot for <span className="text-paper font-semibold">{eventTitle}</span> has been confirmed.
         </p>
-        <p className="text-xs font-mono text-text-dim">See you there ⚡</p>
+        <p className="text-xs font-mono text-gray">See you there.</p>
       </div>
     );
   }
 
   const inputClass =
-    "w-full bg-bg-elevated border border-border-subtle rounded-xl px-4 py-3 text-sm text-text-primary placeholder:text-text-dim font-mono focus:outline-none focus:border-border-glow transition-colors";
+    "w-full bg-panel-2 border border-line rounded-[4px] px-4 py-3 text-sm text-paper placeholder:text-gray font-mono focus:outline-none focus:border-gold transition-colors";
 
-  const labelClass = "block text-[11px] font-mono text-text-dim uppercase tracking-widest mb-1.5";
+  const labelClass = "block text-[11px] font-mono text-gray uppercase tracking-widest mb-1.5";
 
   return (
-    <form onSubmit={handleSubmit} className="glass-card glow-border rounded-2xl p-6 space-y-5">
+    <form onSubmit={handleSubmit} className="via-card p-6 space-y-5">
       <div>
-        <h3 className="text-lg font-black text-text-primary flex items-center gap-2">
-          <span className="text-grad-cyan font-mono text-sm">//</span>
+        <h3 className="text-lg font-display font-semibold text-paper">
           Register for this Event
         </h3>
-        <p className="text-xs text-text-dim font-mono mt-1">
+        <p className="text-xs text-gray font-mono mt-1">
           Fields marked * are required.
         </p>
       </div>
@@ -150,28 +149,29 @@ export default function EventRegistrationForm({ eventId, eventTitle }: Props) {
       </div>
 
       {status === "duplicate" && (
-        <div className="bg-amber-500/10 border border-amber-500/30 rounded-xl px-4 py-3 text-sm text-amber-400 font-mono">
-          ⚠ You&apos;re already registered for this event using that Student ID.
+        <div className="bg-amber-500/10 border border-amber-500/30 rounded-[4px] px-4 py-3 text-sm text-amber-400 font-mono">
+          You&apos;re already registered for this event using that Student ID.
         </div>
       )}
 
       {status === "error" && (
-        <div className="bg-red-500/10 border border-red-500/30 rounded-xl px-4 py-3 text-sm text-red-400 font-mono">
-          ✕ Something went wrong. Please try again.
+        <div className="bg-red-500/10 border border-red-500/30 rounded-[4px] px-4 py-3 text-sm text-red-400 font-mono">
+          Something went wrong. Please try again.
         </div>
       )}
 
-      <button
+      <Button
         type="submit"
+        variant="solid"
         disabled={status === "loading"}
-        className="w-full bg-linear-to-r from-grad-blue via-grad-violet to-grad-cyan text-white font-bold text-sm h-12 rounded-xl glow-btn hover:opacity-90 transition-all active:scale-[0.99] disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+        className="w-full h-12 disabled:opacity-50 disabled:cursor-not-allowed"
       >
         {status === "loading" ? (
           <span className="font-mono text-xs tracking-widest">Submitting...</span>
         ) : (
           "Confirm Registration →"
         )}
-      </button>
+      </Button>
     </form>
   );
 }
