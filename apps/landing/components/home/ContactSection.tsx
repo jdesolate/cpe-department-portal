@@ -10,9 +10,9 @@ const CONTACT_LINES = [
 
 export default function ContactSection() {
   return (
-    <section className="bg-panel border-t border-line">
+    <section id="contact" className="bg-card border-t border-line scroll-mt-20">
       <div className="max-w-7xl mx-auto px-4 md:px-6 py-16">
-        <TraceDivider label="Contact Us" className="mb-8" />
+        <TraceDivider label="Contact Us" as="h2" className="mb-8" />
         <ul className="space-y-3 mb-8">
           {CONTACT_LINES.map((line) => (
             <li key={line} className="flex items-start gap-3 text-gray text-sm leading-relaxed">

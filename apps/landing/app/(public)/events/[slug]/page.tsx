@@ -49,18 +49,18 @@ export default async function EventDetailPage({ params }: Props) {
                 <div className="flex flex-wrap gap-2">
                   <Tag
                     tone="maroon"
-                    className={isLoginRequired ? "" : "border-emerald-500/40 text-emerald-400"}
+                    className={isLoginRequired ? "" : "border-emerald-500/40 text-emerald-700"}
                   >
                     {isLoginRequired ? "Login Required" : "Open Registration"}
                   </Tag>
                   {isFull && (
-                    <Tag tone="maroon" className="border-red-500/40 text-red-400">
+                    <Tag tone="maroon" className="border-red-500/40 text-red-700">
                       Full
                     </Tag>
                   )}
                 </div>
 
-                <h1 className="text-3xl md:text-4xl font-display font-semibold text-paper leading-tight">
+                <h1 className="text-3xl md:text-4xl font-display font-semibold text-foreground leading-tight">
                   {event.title}
                 </h1>
 
@@ -72,9 +72,9 @@ export default async function EventDetailPage({ params }: Props) {
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
                   {date && (
-                    <div className="bg-panel-2/60 rounded-[4px] px-4 py-3 border border-line">
+                    <div className="bg-background/60 rounded-[4px] px-4 py-3 border border-line">
                       <p className="text-[10px] font-mono text-gray uppercase tracking-widest mb-1">Date & Time</p>
-                      <p className="text-sm font-semibold text-paper">
+                      <p className="text-sm font-semibold text-foreground">
                         {date.toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric", year: "numeric" })}
                       </p>
                       <p className="text-xs text-gray font-mono">
@@ -83,19 +83,19 @@ export default async function EventDetailPage({ params }: Props) {
                     </div>
                   )}
                   {event.location && (
-                    <div className="bg-panel-2/60 rounded-[4px] px-4 py-3 border border-line">
+                    <div className="bg-background/60 rounded-[4px] px-4 py-3 border border-line">
                       <p className="text-[10px] font-mono text-gray uppercase tracking-widest mb-1">Location</p>
-                      <p className="text-sm font-semibold text-paper">{event.location}</p>
+                      <p className="text-sm font-semibold text-foreground">{event.location}</p>
                     </div>
                   )}
                   {event.capacity && (
-                    <div className="bg-panel-2/60 rounded-[4px] px-4 py-3 border border-line">
+                    <div className="bg-background/60 rounded-[4px] px-4 py-3 border border-line">
                       <p className="text-[10px] font-mono text-gray uppercase tracking-widest mb-1">Capacity</p>
-                      <p className="text-sm font-semibold text-paper">
+                      <p className="text-sm font-semibold text-foreground">
                         {registrationCount ?? 0} / {event.capacity} registered
                       </p>
                       {spotsLeft !== null && spotsLeft > 0 && (
-                        <p className="text-xs text-emerald-400 font-mono mt-0.5">{spotsLeft} slots remaining</p>
+                        <p className="text-xs text-emerald-700 font-mono mt-0.5">{spotsLeft} slots remaining</p>
                       )}
                     </div>
                   )}

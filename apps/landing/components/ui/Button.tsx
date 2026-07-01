@@ -1,8 +1,8 @@
 import { cn } from "@/lib/utils";
 
 const VARIANT_CLASSES = {
-  outline: "border border-gold text-gold bg-transparent hover:bg-gold hover:text-ink",
-  solid: "border border-gold bg-gold text-ink hover:bg-gold-dim hover:border-gold-dim",
+  outline: "border border-gold text-gold-text bg-transparent hover:bg-gold hover:text-foreground",
+  solid: "border border-gold bg-gold text-foreground hover:bg-gold-dim hover:border-gold-dim",
 } as const;
 
 export default function Button({

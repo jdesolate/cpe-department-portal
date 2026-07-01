@@ -44,4 +44,17 @@ The primary brand color (`#7c2635` / `#a3333f`), used for CTAs, headings, button
 _Avoid_: "green" — this was a past misidentification of the old dark-theme `--panel` card-surface color, which had a green tint; there is no green in this brand system.
 
 **Line** / **Border** (`--line`):
-The default border color for cards and dividers, kept brand-colored (gold-tinted) rather than neutral gray, to preserve the circuit-badge identity.
+The default border color for cards and dividers, kept brand-colored (gold-tinted) rather than neutral gray, to preserve the circuit-badge identity. At ~1.4:1 against white it fails the WCAG 3:1 non-text contrast minimum, so it's decorative-only — functional boundaries that need to be reliably visible (form field borders/focus states) use `--gray` and `--maroon-bright` instead; see [ADR 0001 addendum](docs/adr/0001-landing-light-theme-rebrand.md).
+
+## Typography
+
+The parent university site (cit.edu) pairs Kumbh Sans (body/nav) with Lalezar (a bold, condensed poster/display font) for headings. `apps/landing` deliberately diverges from this pairing to reinforce the circuit-badge system's technical identity rather than the university site's institutional-poster look; the color relationship (maroon-primary/gold-secondary) is what ties the two sites together, not the type.
+
+**Space Grotesk** (`--font-space-grotesk`, `font-display`):
+Display font — headings, hero titles, and the nav brand wordmark. A geometric/technical sans chosen in place of cit.edu's Lalezar.
+
+**IBM Plex Sans** (`--font-plex-sans`, `font-sans`):
+Body font — running text, paragraphs, general UI copy. Diverges from cit.edu's Kumbh Sans; IBM Plex was designed for technical documentation, which reads closer to a CpE department identity than a general-purpose sans.
+
+**IBM Plex Mono** (`--font-plex-mono`, `font-mono`):
+Monospace font — nav links, buttons, labels, and footer text, typically styled with uppercase tracking. Has no equivalent on cit.edu (which uses no monospace type); this is CpE-specific, reinforcing the circuit-board motif alongside the dot-grid and trace-line elements.

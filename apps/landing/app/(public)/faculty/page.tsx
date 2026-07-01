@@ -40,8 +40,8 @@ export default function FacultyDirectory() {
 
         <FadeInView className="mb-14 text-center md:text-left">
           <TraceDivider label="Personnel Directory" className="mb-4 max-w-xs mx-auto md:mx-0" />
-          <h1 className="text-4xl md:text-5xl font-display font-semibold tracking-tight text-paper">
-            Faculty & <span className="text-gold">Roster</span>
+          <h1 className="text-4xl md:text-5xl font-display font-semibold tracking-tight text-foreground">
+            Faculty & <span className="text-maroon-bright">Roster</span>
           </h1>
           <p className="text-gray mt-3 text-base md:text-lg max-w-2xl font-light leading-relaxed">
             The engineers, researchers, and professors driving our Computer Engineering programs.
@@ -55,13 +55,13 @@ export default function FacultyDirectory() {
               className="via-card overflow-hidden group hover:border-gold/40 transition-all duration-300 cursor-pointer flex flex-col"
             >
               <div className="px-6 pt-8 pb-4 flex items-center gap-4">
-                <div className="w-14 h-14 rounded-full bg-maroon-bright flex items-center justify-center text-paper font-display font-semibold text-lg shrink-0">
+                <div className="w-14 h-14 rounded-full bg-maroon-bright flex items-center justify-center text-background font-display font-semibold text-lg shrink-0">
                   {prof.initials}
                 </div>
                 <div>
-                  <h3 className="font-display font-semibold text-paper leading-tight group-hover:text-gold transition-colors duration-300">
+                  <h2 className="font-display font-semibold text-foreground leading-tight group-hover:text-gold-text transition-colors duration-300">
                     {prof.name}
-                  </h3>
+                  </h2>
                   <p className="text-[11px] font-mono text-gray uppercase tracking-wide mt-0.5">
                     {prof.designation}
                   </p>
@@ -77,12 +77,12 @@ export default function FacultyDirectory() {
                   <span className="text-gray font-mono">@</span>
                   <a
                     href={`mailto:${prof.email}`}
-                    className="text-gold hover:text-gold-dim transition-colors font-mono truncate"
+                    className="text-gold-text hover:text-maroon-bright transition-colors font-mono truncate"
                   >
                     {prof.email}
                   </a>
                 </div>
-                <div className="flex items-start gap-2 bg-panel-2/60 p-2.5 rounded-[4px] border border-line">
+                <div className="flex items-start gap-2 bg-background/60 p-2.5 rounded-[4px] border border-line">
                   <DiamondBullet className="mt-0.5" />
                   <div>
                     <span className="font-mono font-semibold text-gray block text-[10px] uppercase tracking-wider">

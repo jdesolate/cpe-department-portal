@@ -33,16 +33,16 @@ export default function HeroSection() {
       <div className="absolute inset-0 dot-grid" />
 
       {/* Bottom fade */}
-      <div className="absolute bottom-0 inset-x-0 h-32 bg-linear-to-t from-ink to-transparent" />
+      <div className="absolute bottom-0 inset-x-0 h-32 bg-linear-to-t from-background to-transparent" />
 
       {/* Decorative circuit lines */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-20">
         <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
           <defs>
             <linearGradient id="lineGrad" x1="0" y1="0" x2="1" y2="0">
-              <stop offset="0%" stopColor="#f2b705" stopOpacity="0" />
-              <stop offset="50%" stopColor="#f2b705" stopOpacity="1" />
-              <stop offset="100%" stopColor="#f2b705" stopOpacity="0" />
+              <stop offset="0%" stopColor="#a3333f" stopOpacity="0" />
+              <stop offset="50%" stopColor="#a3333f" stopOpacity="1" />
+              <stop offset="100%" stopColor="#a3333f" stopOpacity="0" />
             </linearGradient>
           </defs>
           <line x1="0" y1="30%" x2="100%" y2="30%" stroke="url(#lineGrad)" strokeWidth="0.5" />
@@ -74,7 +74,7 @@ export default function HeroSection() {
           className="font-display font-bold text-5xl sm:text-6xl md:text-8xl tracking-tight leading-none will-change-transform"
         >
           Engineering the next generation <br />
-          <span className="text-gold">of computer engineers.</span>
+          <span className="text-maroon-bright">of computer engineers.</span>
         </motion.h1>
 
         <motion.p
@@ -93,9 +93,9 @@ export default function HeroSection() {
           transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1], delay: 0.3 }}
           className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-2"
         >
-          <a href="#portal-dashboard" className="w-full sm:w-auto">
+          <a href="#program" className="w-full sm:w-auto">
             <Button variant="solid" className="w-full sm:w-auto">
-              Explore Department
+              Explore the Program
             </Button>
           </a>
           <a href="/events" className="w-full sm:w-auto">

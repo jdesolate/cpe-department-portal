@@ -2,7 +2,7 @@ import { cn } from "@/lib/utils";
 
 const TONE_CLASSES = {
   maroon: "border-maroon-bright text-maroon-bright",
-  gold: "border-gold text-gold",
+  gold: "border-gold text-gold-text",
   muted: "border-line text-gray",
 } as const;
 

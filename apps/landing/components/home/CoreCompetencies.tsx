@@ -17,8 +17,8 @@ const PILLARS = [
 
 export default function CoreCompetencies() {
   return (
-    <section className="max-w-7xl mx-auto px-4 md:px-6 py-16">
-      <TraceDivider label="Core Competencies" className="mb-6" />
+    <section id="program" className="max-w-7xl mx-auto px-4 md:px-6 py-16 scroll-mt-20">
+      <TraceDivider label="Core Competencies" as="h2" className="mb-6" />
       <p className="text-gray max-w-2xl mb-10 leading-relaxed">
         Every Computer Engineering student at CIT-U completes both of the department&apos;s
         core pillars — this is a combined curriculum, not a choice between tracks.
@@ -27,13 +27,20 @@ export default function CoreCompetencies() {
         {PILLARS.map((pillar) => (
           <Card key={pillar.title} className="p-6">
             <Tag>{pillar.tag}</Tag>
-            <h3 className="font-display font-semibold text-lg text-paper mt-4 mb-2">
+            <h3 className="font-display font-semibold text-lg text-foreground mt-4 mb-2">
               {pillar.title}
             </h3>
             <p className="text-sm text-gray leading-relaxed">{pillar.body}</p>
           </Card>
         ))}
       </div>
+      <p className="text-sm text-gray mt-8">
+        Considering CpE at CIT-U?{" "}
+        <a href="#contact" className="text-gold-text hover:text-maroon-bright transition-colors font-medium">
+          Contact the department
+        </a>{" "}
+        for admission details.
+      </p>
     </section>
   );
 }

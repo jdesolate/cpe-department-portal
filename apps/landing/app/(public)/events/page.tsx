@@ -20,8 +20,8 @@ export default async function EventsPage() {
 
         <FadeInView className="mb-14 text-center md:text-left">
           <TraceDivider label="Upcoming Events" className="mb-4 max-w-xs mx-auto md:mx-0" />
-          <h1 className="text-4xl md:text-5xl font-display font-semibold tracking-tight text-paper">
-            Department <span className="text-gold">Events</span>
+          <h1 className="text-4xl md:text-5xl font-display font-semibold tracking-tight text-foreground">
+            Department <span className="text-maroon-bright">Events</span>
           </h1>
           <p className="text-gray mt-3 text-base md:text-lg max-w-2xl font-light leading-relaxed">
             Seminars, acquaintance parties, org events, and more. Register below to secure your slot.
@@ -42,7 +42,7 @@ export default async function EventsPage() {
                       {date ? (
                         <div className="flex items-center gap-3">
                           <div className="text-center">
-                            <p className="text-2xl font-display font-semibold text-gold leading-none">
+                            <p className="text-2xl font-display font-semibold text-gold-text leading-none">
                               {date.getDate()}
                             </p>
                             <p className="text-[10px] font-mono text-gray uppercase tracking-wider">
@@ -60,16 +60,16 @@ export default async function EventsPage() {
                       )}
                       <Tag
                         tone="maroon"
-                        className={isLoginRequired ? "shrink-0" : "shrink-0 border-emerald-500/40 text-emerald-400"}
+                        className={isLoginRequired ? "shrink-0" : "shrink-0 border-emerald-500/40 text-emerald-700"}
                       >
                         {isLoginRequired ? "Login Required" : "Open"}
                       </Tag>
                     </div>
 
                     <div className="p-5 flex flex-col flex-1 gap-3">
-                      <h3 className="font-display font-semibold text-paper text-base leading-snug group-hover:text-gold transition-colors duration-300">
+                      <h2 className="font-display font-semibold text-foreground text-base leading-snug group-hover:text-gold-text transition-colors duration-300">
                         {event.title}
-                      </h3>
+                      </h2>
                       {event.description && (
                         <p className="text-sm text-gray font-light leading-relaxed line-clamp-2">
                           {event.description}
@@ -86,7 +86,7 @@ export default async function EventsPage() {
                     </div>
 
                     <div className="px-5 pb-5">
-                      <div className="w-full bg-transparent border border-gold/40 text-paper text-sm font-semibold h-10 rounded-[4px] flex items-center justify-center gap-2 group-hover:bg-gold/10 group-hover:border-gold transition-all">
+                      <div className="w-full bg-transparent border border-gold/40 text-foreground text-sm font-semibold h-10 rounded-[4px] flex items-center justify-center gap-2 group-hover:bg-gold/10 group-hover:border-gold transition-all">
                         Register Now →
                       </div>
                     </div>

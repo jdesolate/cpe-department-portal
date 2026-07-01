@@ -57,9 +57,9 @@ export default function EventRegistrationForm({ eventId, eventTitle }: Props) {
   if (status === "success") {
     return (
       <div className="via-card p-8 text-center space-y-4">
-        <h3 className="text-xl font-display font-semibold text-gold">You&apos;re Registered!</h3>
+        <h3 className="text-xl font-display font-semibold text-maroon-bright">You&apos;re Registered!</h3>
         <p className="text-gray text-sm font-light max-w-xs mx-auto">
-          Your slot for <span className="text-paper font-semibold">{eventTitle}</span> has been confirmed.
+          Your slot for <span className="text-foreground font-semibold">{eventTitle}</span> has been confirmed.
         </p>
         <p className="text-xs font-mono text-gray">See you there.</p>
       </div>
@@ -67,14 +67,14 @@ export default function EventRegistrationForm({ eventId, eventTitle }: Props) {
   }
 
   const inputClass =
-    "w-full bg-panel-2 border border-line rounded-[4px] px-4 py-3 text-sm text-paper placeholder:text-gray font-mono focus:outline-none focus:border-gold transition-colors";
+    "w-full bg-background border border-gray/80 rounded-[4px] px-4 py-3 text-sm text-foreground placeholder:text-gray/60 font-mono focus:outline-none focus:border-maroon-bright transition-colors";
 
   const labelClass = "block text-[11px] font-mono text-gray uppercase tracking-widest mb-1.5";
 
   return (
     <form onSubmit={handleSubmit} className="via-card p-6 space-y-5">
       <div>
-        <h3 className="text-lg font-display font-semibold text-paper">
+        <h3 className="text-lg font-display font-semibold text-foreground">
           Register for this Event
         </h3>
         <p className="text-xs text-gray font-mono mt-1">
@@ -149,13 +149,13 @@ export default function EventRegistrationForm({ eventId, eventTitle }: Props) {
       </div>
 
       {status === "duplicate" && (
-        <div className="bg-amber-500/10 border border-amber-500/30 rounded-[4px] px-4 py-3 text-sm text-amber-400 font-mono">
+        <div className="bg-amber-500/10 border border-amber-500/30 rounded-[4px] px-4 py-3 text-sm text-amber-700 font-mono">
           You&apos;re already registered for this event using that Student ID.
         </div>
       )}
 
       {status === "error" && (
-        <div className="bg-red-500/10 border border-red-500/30 rounded-[4px] px-4 py-3 text-sm text-red-400 font-mono">
+        <div className="bg-red-500/10 border border-red-500/30 rounded-[4px] px-4 py-3 text-sm text-red-700 font-mono">
           Something went wrong. Please try again.
         </div>
       )}

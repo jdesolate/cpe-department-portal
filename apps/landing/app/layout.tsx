@@ -40,10 +40,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         plexMono.variable
       )}
     >
-      <body className="bg-ink text-paper flex flex-col min-h-screen antialiased">
+      <body className="bg-background text-foreground flex flex-col min-h-screen antialiased">
 
         {/* Navigation Header */}
-        <header className="sticky top-0 z-50 border-b border-line bg-ink">
+        <header className="sticky top-0 z-50 border-b border-line bg-background">
           <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
 
             {/* Brand */}
@@ -56,7 +56,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 className="object-contain transition-transform group-hover:scale-110 duration-200"
                 priority
               />
-              <span className="font-display font-semibold text-lg tracking-tight text-paper group-hover:text-gold transition-colors">
+              <span className="font-display font-semibold text-lg tracking-tight text-foreground group-hover:text-gold-text transition-colors">
                 CpE Department
               </span>
             </Link>
@@ -65,27 +65,31 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <nav className="hidden md:flex items-center gap-1 text-sm font-medium text-gray">
               {[
                 { href: "/", label: "Home" },
+                { href: "/#program", label: "Program" },
                 { href: "/faculty", label: "Faculty" },
                 { href: "/events", label: "Events" },
               ].map(({ href, label }) => (
                 <Link
                   key={href}
                   href={href}
-                  className="px-3 py-2 rounded-[4px] hover:bg-panel hover:text-paper transition-colors duration-150"
+                  className="px-3 py-2 rounded-[4px] hover:bg-card hover:text-foreground transition-colors duration-150"
                 >
                   {label}
                 </Link>
               ))}
               <a href={process.env.NEXT_PUBLIC_INTERNAL_APP_URL ?? "#"} className="ml-2">
                 <Button variant="solid" className="text-[11px] h-9 px-5">
-                  Staff Login
+                  Portal Login
                 </Button>
               </a>
             </nav>
 
             {/* Mobile Nav */}
             <div className="flex md:hidden items-center gap-2">
-              <Link href="/events" className="text-xs text-gray font-semibold px-2 py-1.5 hover:bg-panel rounded-[4px] transition-colors">
+              <Link href="/#program" className="text-xs text-gray font-semibold px-2 py-1.5 hover:bg-card rounded-[4px] transition-colors">
+                Program
+              </Link>
+              <Link href="/events" className="text-xs text-gray font-semibold px-2 py-1.5 hover:bg-card rounded-[4px] transition-colors">
                 Events
               </Link>
               <a href={process.env.NEXT_PUBLIC_INTERNAL_APP_URL ?? "#"}>
@@ -104,7 +108,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         </div>
 
         {/* Footer */}
-        <footer className="relative z-10 border-t border-line bg-panel-2 text-gray text-xs py-8 text-center font-mono">
+        <footer className="relative z-10 border-t border-line bg-card text-gray text-xs py-8 text-center font-mono">
           <div className="trace-line absolute top-0 inset-x-0" />
           <div className="max-w-7xl mx-auto px-4 space-y-1.5">
             <p className="text-gray">
@@ -117,7 +121,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 href="https://www.facebook.com/cituCPE"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-gold hover:text-gold-dim transition-colors"
+                className="text-gold-text hover:text-maroon-bright transition-colors"
               >
                 facebook.com/cituCPE
               </a>

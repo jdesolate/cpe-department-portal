@@ -41,8 +41,10 @@ const DEFAULT_MEDIA: MediaItem[] = [
 
 export default function DepartmentCarousel() {
   const [activeIndex, setActiveIndex] = useState(0);
-  const [isPlaying, setIsPlaying] = useState(true);
+  const [autoPlay, setAutoPlay] = useState(true);
+  const [isHovering, setIsHovering] = useState(false);
   const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
+  const isPlaying = autoPlay && !isHovering;
 
   useEffect(() => {
     if (!isPlaying || DEFAULT_MEDIA[activeIndex].type === "video") return;
@@ -67,10 +69,14 @@ export default function DepartmentCarousel() {
   return (
     <section
       className="relative max-w-7xl mx-auto px-4 md:px-6 my-10"
-      onMouseEnter={() => setIsPlaying(false)}
-      onMouseLeave={() => setIsPlaying(true)}
+      onMouseEnter={() => setIsHovering(true)}
+      onMouseLeave={() => setIsHovering(false)}
+      onFocus={() => setIsHovering(true)}
+      onBlur={(e) => {
+        if (!e.currentTarget.contains(e.relatedTarget as Node)) setIsHovering(false);
+      }}
     >
-      <div className="relative h-115 md:h-130 w-full overflow-hidden rounded-[4px] bg-panel border border-line group/carousel">
+      <div className="relative h-115 md:h-130 w-full overflow-hidden rounded-[4px] bg-card border border-line group/carousel">
 
         {DEFAULT_MEDIA.map((item, index) => (
           <div
@@ -98,14 +104,15 @@ export default function DepartmentCarousel() {
               />
             )}
 
-            <div className="absolute inset-0 bg-linear-to-t from-ink via-ink/30 to-transparent" />
+            {/* Scrim stays dark regardless of page theme, for caption legibility over arbitrary photo/video content */}
+            <div className="absolute inset-0 bg-linear-to-t from-foreground via-foreground/30 to-transparent" />
 
             <div className="absolute bottom-0 inset-x-0 p-6 md:p-10 z-20 max-w-3xl space-y-3">
               <Tag>{item.tag}</Tag>
-              <h2 className="text-2xl md:text-4xl font-display font-semibold text-paper tracking-tight leading-tight">
+              <h2 className="text-2xl md:text-4xl font-display font-semibold text-background tracking-tight leading-tight">
                 {item.title}
               </h2>
-              <p className="text-sm md:text-base text-gray font-light max-w-2xl leading-relaxed">
+              <p className="text-sm md:text-base text-background/70 font-light max-w-2xl leading-relaxed">
                 {item.subtitle}
               </p>
             </div>
@@ -113,21 +120,30 @@ export default function DepartmentCarousel() {
         ))}
 
         <button
+          onClick={() => setAutoPlay((prev) => !prev)}
+          className="absolute top-4 left-4 z-30 h-9 w-9 flex items-center justify-center rounded-full bg-foreground/80 text-background opacity-0 group-hover/carousel:opacity-100 focus-visible:opacity-100 transition-all duration-200 border border-line hover:border-gold active:scale-90 cursor-pointer"
+          aria-label={autoPlay ? "Pause slideshow" : "Play slideshow"}
+          aria-pressed={!autoPlay}
+        >
+          {autoPlay ? "❚❚" : "▶"}
+        </button>
+
+        <button
           onClick={() => setActiveIndex((prev) => (prev - 1 + DEFAULT_MEDIA.length) % DEFAULT_MEDIA.length)}
-          className="absolute left-4 top-1/2 -translate-y-1/2 z-30 h-10 w-10 flex items-center justify-center rounded-full bg-panel text-paper opacity-0 group-hover/carousel:opacity-100 transition-all duration-200 border border-line hover:border-gold active:scale-90 cursor-pointer"
+          className="absolute left-4 top-1/2 -translate-y-1/2 z-30 h-10 w-10 flex items-center justify-center rounded-full bg-foreground/70 text-background opacity-0 group-hover/carousel:opacity-100 focus-visible:opacity-100 transition-all duration-200 border border-line hover:border-gold active:scale-90 cursor-pointer"
           aria-label="Previous slide"
         >
           ←
         </button>
         <button
           onClick={() => setActiveIndex((prev) => (prev + 1) % DEFAULT_MEDIA.length)}
-          className="absolute right-4 top-1/2 -translate-y-1/2 z-30 h-10 w-10 flex items-center justify-center rounded-full bg-panel text-paper opacity-0 group-hover/carousel:opacity-100 transition-all duration-200 border border-line hover:border-gold active:scale-90 cursor-pointer"
+          className="absolute right-4 top-1/2 -translate-y-1/2 z-30 h-10 w-10 flex items-center justify-center rounded-full bg-foreground/70 text-background opacity-0 group-hover/carousel:opacity-100 focus-visible:opacity-100 transition-all duration-200 border border-line hover:border-gold active:scale-90 cursor-pointer"
           aria-label="Next slide"
         >
           →
         </button>
 
-        <div className="absolute top-4 right-4 z-30 flex items-center gap-2 bg-panel/90 px-3 py-2 rounded-[4px] border border-line">
+        <div className="absolute top-4 right-4 z-30 flex items-center gap-2 bg-foreground/80 px-3 py-2 rounded-[4px] border border-line">
           {DEFAULT_MEDIA.map((_, index) => (
             <button
               key={index}
@@ -135,7 +151,7 @@ export default function DepartmentCarousel() {
               className={`w-2 h-2 rotate-45 transition-all duration-300 cursor-pointer ${
                 index === activeIndex
                   ? "bg-gold border border-gold"
-                  : "bg-transparent border border-line hover:border-gray"
+                  : "bg-transparent border border-line hover:border-background/50"
               }`}
               aria-label={`Slide ${index + 1}`}
             />
