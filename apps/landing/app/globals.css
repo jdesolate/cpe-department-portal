@@ -1,0 +1,139 @@
+@import "tailwindcss";
+
+/* 1. Design Tokens — Dark Tech Palette */
+:root {
+  --bg-base:        #050b14;
+  --bg-surface:     #0d1626;
+  --bg-elevated:    #131f35;
+
+  --gradient-start: #3b82f6;
+  --gradient-mid:   #8b5cf6;
+  --gradient-end:   #06b6d4;
+  --accent-glow:    #00d4ff;
+
+  --text-primary:   #f1f5f9;
+  --text-muted:     #94a3b8;
+  --text-dim:       #475569;
+
+  --border-subtle:  rgba(255,255,255,0.08);
+  --border-glow:    rgba(59,130,246,0.35);
+
+  /* Shadcn Semantic Mapping */
+  --background: var(--bg-base);
+  --foreground: var(--text-primary);
+  --card: var(--bg-surface);
+  --card-foreground: var(--text-primary);
+  --popover: var(--bg-elevated);
+  --popover-foreground: var(--text-primary);
+  --primary: var(--accent-glow);
+  --primary-foreground: var(--bg-base);
+  --secondary: var(--bg-elevated);
+  --secondary-foreground: var(--text-muted);
+  --muted: var(--bg-surface);
+  --muted-foreground: var(--text-muted);
+  --accent: var(--accent-glow);
+  --accent-foreground: var(--bg-base);
+  --destructive: #ef4444;
+  --destructive-foreground: #ffffff;
+  --border: var(--border-subtle);
+  --input: var(--border-subtle);
+  --ring: var(--gradient-start);
+  --radius: 0.75rem;
+}
+
+/* 2. Tailwind v4 Inline Theme Registry */
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: Inter, Arial, Helvetica, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', ui-monospace, monospace;
+
+  --color-bg-base:      var(--bg-base);
+  --color-bg-surface:   var(--bg-surface);
+  --color-bg-elevated:  var(--bg-elevated);
+  --color-accent-glow:  var(--accent-glow);
+  --color-text-primary: var(--text-primary);
+  --color-text-muted:   var(--text-muted);
+  --color-text-dim:     var(--text-dim);
+  --color-border-subtle: var(--border-subtle);
+  --color-border-glow:  var(--border-glow);
+  --color-grad-blue:    var(--gradient-start);
+  --color-grad-violet:  var(--gradient-mid);
+  --color-grad-cyan:    var(--gradient-end);
+
+  /* Shadcn bindings */
+  --color-card:              var(--card);
+  --color-card-foreground:   var(--card-foreground);
+  --color-primary:           var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-accent:            var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-border:            var(--border);
+  --radius-md:               var(--radius);
+  --spacing-13:              3.25rem;
+
+  /* Keyframe animations */
+  --animate-fade-in:    fade-in 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  --animate-glow-pulse: glow-pulse 4s ease-in-out infinite;
+  --animate-float:      float 6s ease-in-out infinite;
+
+  @keyframes fade-in {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes glow-pulse {
+    0%, 100% { opacity: 0.3; }
+    50%       { opacity: 0.7; }
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50%       { transform: translateY(-12px); }
+  }
+}
+
+/* 3. Base Styles */
+body {
+  background: var(--bg-base);
+  color: var(--text-primary);
+}
+
+/* 4. Utility Layer */
+
+@utility dot-grid {
+  background-image: radial-gradient(rgba(255,255,255,0.055) 1px, transparent 1px);
+  background-size: 28px 28px;
+}
+
+@utility glass-card {
+  background: rgba(255,255,255,0.04);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255,255,255,0.08);
+}
+
+@utility gradient-text {
+  background: linear-gradient(135deg, #60a5fa, #a78bfa, #22d3ee);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+@utility glow-border {
+  border: 1px solid rgba(59,130,246,0.25);
+  box-shadow: 0 0 24px rgba(59,130,246,0.08), inset 0 0 24px rgba(59,130,246,0.02);
+}
+
+@utility glow-btn {
+  box-shadow: 0 0 20px rgba(0,212,255,0.3), 0 0 40px rgba(0,212,255,0.1);
+}
+
+@utility scrollbar-thin {
+  &::-webkit-scrollbar        { width: 4px; height: 4px; }
+  &::-webkit-scrollbar-track  { background: transparent; }
+  &::-webkit-scrollbar-thumb  { background: rgba(255,255,255,0.1); border-radius: 9999px; }
+  &::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.2); }
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255,255,255,0.1) transparent;
+}
