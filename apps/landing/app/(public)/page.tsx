@@ -3,6 +3,8 @@ import DepartmentCarousel from "@/components/DepartmentCarousel";
 import HeroSection from "@/components/home/HeroSection";
 import CoreCompetencies from "@/components/home/CoreCompetencies";
 import FeaturedProjects from "@/components/home/FeaturedProjects";
+import ResearchHighlights from "@/components/home/ResearchHighlights";
+import DepartmentActivities from "@/components/home/DepartmentActivities";
 import QuickAccess from "@/components/home/QuickAccess";
 import Services from "@/components/home/Services";
 import ContactSection from "@/components/home/ContactSection";
@@ -49,7 +51,17 @@ export default async function HomePortal() {
         <FeaturedProjects />
       </FadeInView>
 
-      {/* 5. QUICK ACCESS */}
+      {/* 5. RESEARCH HIGHLIGHTS */}
+      <FadeInView delay={0.05}>
+        <ResearchHighlights />
+      </FadeInView>
+
+      {/* 6. DEPARTMENT ACTIVITIES */}
+      <FadeInView delay={0.05}>
+        <DepartmentActivities />
+      </FadeInView>
+
+      {/* 7. QUICK ACCESS */}
       <FadeInView delay={0.05}>
         <QuickAccess />
       </FadeInView>

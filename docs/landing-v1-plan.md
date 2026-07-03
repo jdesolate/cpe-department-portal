@@ -39,10 +39,11 @@ Target nav: Home · Programs · Faculty · Projects · Research · Events · Ser
 - [x] Seeded with 3 SAMPLE MSAD projects (isSample flag) — Merv replaces with real MSAD data
 - [ ] Merv: swap sample entries for real MSAD projects (screenshots, GitHub, descriptions, teams)
 
-## Session 3 — Research Highlights + Department Activities
+## Session 3 — Research Highlights + Department Activities (DONE, pending real data)
 
-- [ ] Research Highlights section (featured research + link to Research Portal)
-- [ ] Department Activities section (ICpEP, competitions, ceremonies, defenses, seminars, outreach)
+- [x] Research Highlights section — cards + Research Portal CTA (shows "coming soon" until NEXT_PUBLIC_RESEARCH_PORTAL_URL is set). apps/landing/lib/research.ts + components/home/ResearchHighlights.tsx. Hero "View Research" CTA now resolves to #research.
+- [x] Department Activities section — 6-category icon grid (ICpEP, competitions, ceremonies, defenses, seminars, outreach), ready to hold photos later. components/home/DepartmentActivities.tsx
+- [ ] Merv: swap sample research for real featured research from the Research Portal developer; set NEXT_PUBLIC_RESEARCH_PORTAL_URL
 
 ## Session 4 — Carousel + Faculty rework (blocked on photo gathering)
 
