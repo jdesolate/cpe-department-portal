@@ -51,7 +51,8 @@ const SERVICES: Service[] = [
   {
     title: "Internal Portal",
     body: "Faculty announcements and department tools for students, org officers, and faculty.",
-    href: process.env.NEXT_PUBLIC_INTERNAL_APP_URL ?? "#",
+    // Not publicly deployed yet — show "Coming soon" until the internal app has a live URL.
+    href: "#",
     cta: "Enter Portal",
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6">
