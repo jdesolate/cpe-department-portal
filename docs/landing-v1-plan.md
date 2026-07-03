@@ -32,12 +32,12 @@ Target nav: Home · Programs · Faculty · Projects · Research · Events · Ser
 - [x] Strip jargon placeholder copy ("Records Vault", "current sweep", "System Asset Verified", "board postings")
 - [x] Services section (Datagrades, Research Portal, Gearfolio, Internal Portal — env-driven cards, SVG icons, "Coming soon" until URLs set)
 
-## Session 2 — Featured Projects (flagship)
+## Session 2 — Featured Projects (DONE, pending real data)
 
-- [ ] Featured Projects section (portfolio-grid, screenshot-first, hover overlay, filter by course)
-- [ ] Reusable project data template for future instructors
-  - Fields: title, description, screenshot, course, team members, technologies, GitHub repo, SRS, presentation files
-- [ ] Seed with existing MSAD projects
+- [x] Featured Projects section — screenshot-first cards, tech chips, links row, course filter (auto-hidden until 2+ courses exist). apps/landing/components/home/FeaturedProjects.tsx
+- [x] Reusable project data template — apps/landing/lib/projects.ts (typed, single source of truth) + docs/project-data-template.md instructor guide
+- [x] Seeded with 3 SAMPLE MSAD projects (isSample flag) — Merv replaces with real MSAD data
+- [ ] Merv: swap sample entries for real MSAD projects (screenshots, GitHub, descriptions, teams)
 
 ## Session 3 — Research Highlights + Department Activities
 
@@ -48,6 +48,14 @@ Target nav: Home · Programs · Faculty · Projects · Research · Events · Ser
 
 - [ ] Replace fabricated carousel content (stock media + invented achievements) with real photos
 - [ ] Faculty section with real photos, bios, specializations (remove placeholder people/emails)
+
+---
+
+## Post-v1 / Future (not in scope for this week — recorded so it isn't lost)
+
+- [ ] Full Project Showcase page (`/projects`) with per-project detail pages (`/projects/[id]`) — surfaces the fields the schema already carries (description, screenshot, course, team, tech, GitHub, SRS, presentation files). Per the brief, the highest-value future feature.
+- [ ] Migrate project data from `apps/landing/lib/projects.ts` to Supabase so instructors add projects without code changes.
+- [ ] Gearfolio integration — student portfolios auto-populate from the projects a student is tagged in (single source of truth; solves the "students won't maintain portfolios" problem from the brief).
 
 ---
 

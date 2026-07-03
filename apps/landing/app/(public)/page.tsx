@@ -2,6 +2,7 @@ import { supabase } from "@cpe/shared/lib/supabase";
 import DepartmentCarousel from "@/components/DepartmentCarousel";
 import HeroSection from "@/components/home/HeroSection";
 import CoreCompetencies from "@/components/home/CoreCompetencies";
+import FeaturedProjects from "@/components/home/FeaturedProjects";
 import QuickAccess from "@/components/home/QuickAccess";
 import Services from "@/components/home/Services";
 import ContactSection from "@/components/home/ContactSection";
@@ -43,7 +44,12 @@ export default async function HomePortal() {
         <CoreCompetencies />
       </FadeInView>
 
-      {/* 4. QUICK ACCESS */}
+      {/* 4. FEATURED STUDENT PROJECTS */}
+      <FadeInView delay={0.05}>
+        <FeaturedProjects />
+      </FadeInView>
+
+      {/* 5. QUICK ACCESS */}
       <FadeInView delay={0.05}>
         <QuickAccess />
       </FadeInView>
