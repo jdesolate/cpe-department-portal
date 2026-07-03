@@ -9,6 +9,8 @@ const NAV_LINKS = [
   { href: "/", label: "Home" },
   { href: "/#program", label: "Programs" },
   { href: "/faculty", label: "Faculty" },
+  { href: "/#featured-projects", label: "Projects" },
+  { href: "/#research", label: "Research" },
   { href: "/events", label: "Events" },
   { href: "/#services", label: "Services" },
   { href: "/#contact", label: "Contact" },
@@ -18,7 +20,7 @@ export default function MobileNav() {
   const [open, setOpen] = useState(false);
 
   return (
-    <div className="md:hidden">
+    <div className="lg:hidden">
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}

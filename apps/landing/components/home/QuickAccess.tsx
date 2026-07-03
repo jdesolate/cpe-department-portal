@@ -1,11 +1,13 @@
 import TraceDivider from "@/components/ui/TraceDivider";
 
+// Portal access lives in the Services section now; Quick Access stays focused on
+// jump links to content elsewhere on the site and the department's Facebook page.
 const LINKS = [
   {
-    title: "Student & Faculty Portal",
-    body: "Schedules, feedback, and department tools for logged-in students, org officers, and faculty.",
-    href: process.env.NEXT_PUBLIC_INTERNAL_APP_URL ?? "#",
-    external: true,
+    title: "Student Projects",
+    body: "Browse the software and embedded systems work our students build.",
+    href: "/#featured-projects",
+    external: false,
   },
   {
     title: "Announcements",

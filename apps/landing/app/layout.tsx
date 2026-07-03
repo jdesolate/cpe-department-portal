@@ -25,9 +25,32 @@ const plexMono = IBM_Plex_Mono({
   variable: "--font-plex-mono",
 });
 
+const siteName = "Computer Engineering Department — CIT-U";
+const description =
+  "Cebu Institute of Technology – University's Computer Engineering Department builds industry-ready software and embedded systems engineers through student projects, research, competitions, and professional activities.";
+
 export const metadata: Metadata = {
-  title: "CpE Department — CIT-U",
-  description: "Computer Engineering Department, Cebu Institute of Technology – University",
+  // Set NEXT_PUBLIC_SITE_URL in production so Open Graph/Twitter image URLs resolve absolutely.
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3100"),
+  title: {
+    default: siteName,
+    template: "%s — CpE Department, CIT-U",
+  },
+  description,
+  openGraph: {
+    title: siteName,
+    description,
+    siteName,
+    type: "website",
+    // TODO: replace with a dedicated 1200x630 share image once available.
+    images: ["/cit_cpe_logo.png"],
+  },
+  twitter: {
+    card: "summary",
+    title: siteName,
+    description,
+    images: ["/cit_cpe_logo.png"],
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -63,11 +86,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             </Link>
 
             {/* Desktop Nav */}
-            <nav className="hidden md:flex items-center gap-1 text-sm font-medium text-gray">
+            <nav className="hidden lg:flex items-center gap-1 text-sm font-medium text-gray">
               {[
                 { href: "/", label: "Home" },
                 { href: "/#program", label: "Programs" },
                 { href: "/faculty", label: "Faculty" },
+                { href: "/#featured-projects", label: "Projects" },
+                { href: "/#research", label: "Research" },
                 { href: "/events", label: "Events" },
                 { href: "/#services", label: "Services" },
                 { href: "/#contact", label: "Contact" },

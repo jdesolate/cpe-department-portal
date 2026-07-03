@@ -47,6 +47,10 @@ Target nav: Home · Programs · Faculty · Projects · Research · Events · Ser
 
 ## Session 4 — Carousel + Faculty rework (blocked on photo gathering)
 
+> DEPLOY BLOCKER: do NOT ship a public v1 until this session lands. The carousel's invented
+> achievements and the fictional faculty are a liability for accreditation/industry audiences.
+> (Decided 2026-07-03 to wait for real photos rather than do an interim "make-it-safe" pass.)
+
 - [ ] Replace fabricated carousel content (stock media + invented achievements) with real photos
 - [ ] Faculty section with real photos, bios, specializations (remove placeholder people/emails)
 
@@ -70,6 +74,14 @@ Target nav: Home · Programs · Faculty · Projects · Research · Events · Ser
 - [ ] Competition photos
 - [ ] MSAD projects: screenshots, GitHub repos, descriptions, tech stacks
 - [ ] Research: coordinate with Research Portal developer for featured titles, summaries, links
+
+## Polish pass — independent of content (DONE)
+
+- [x] Production build check — `npm run build:landing` passes; all routes prerender
+- [x] Responsive QA — no horizontal scroll at 375/768/1024/1280; nav switched from `md` to `lg` so the 8-item bar doesn't overflow at ~768 (mobile menu covers 768-1023)
+- [x] SEO/metadata — title template, industry-ready description, Open Graph + Twitter tags (set `NEXT_PUBLIC_SITE_URL` in prod; add a 1200x630 OG image later)
+- [x] Nav now includes Projects + Research (anchors to homepage sections), matching the brief IA
+- [x] Reconciled Quick Access vs Services — removed duplicate Portal link; Quick Access now links Student Projects / Announcements / Events / Facebook
 
 ## Notes
 

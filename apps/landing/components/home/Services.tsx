@@ -13,7 +13,7 @@ const SERVICES: Service[] = [
   {
     title: "Datagrades",
     body: "Grade viewing and academic records for Computer Engineering students.",
-    href: process.env.NEXT_PUBLIC_DATAGRADES_URL ?? "#",
+    href: process.env.NEXT_PUBLIC_DATAGRADES_URL ?? "https://www.data-grades.com/",
     cta: "Open Datagrades",
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6">
@@ -39,7 +39,7 @@ const SERVICES: Service[] = [
   {
     title: "Gearfolio",
     body: "The official student portfolio repository — build your profile, showcase projects, and export a resume.",
-    href: process.env.NEXT_PUBLIC_GEARFOLIO_URL ?? "#",
+    href: process.env.NEXT_PUBLIC_GEARFOLIO_URL ?? "https://gearfolio-v2.vercel.app/",
     cta: "Open Gearfolio",
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6">
