@@ -9,7 +9,7 @@ const LINKS = [
   },
   {
     title: "Announcements",
-    body: "Official directives, pinned notices, and board postings.",
+    body: "Official notices and updates from the department.",
     href: "/#portal-dashboard",
     external: false,
   },

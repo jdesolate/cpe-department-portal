@@ -6,10 +6,11 @@ import Button from "@/components/ui/Button";
 import StatBlock from "@/components/ui/StatBlock";
 import TraceDivider from "@/components/ui/TraceDivider";
 
+// Output-forward figures per the brief; add Competition Participations / Research Outputs once real counts are available.
 const STATS = [
-  { value: "~600", label: "Active Students" },
-  { value: "15+", label: "Full-time Faculty" },
-  { value: "2", label: "Core Specializations" },
+  { value: "65+", label: "Student Projects / Year" },
+  { value: "~600", label: "Students Enrolled" },
+  { value: "15+", label: "Faculty Members" },
 ];
 
 export default function HeroSection() {
@@ -71,10 +72,10 @@ export default function HeroSection() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
-          className="font-display font-bold text-5xl sm:text-6xl md:text-8xl tracking-tight leading-none will-change-transform"
+          className="font-display font-bold text-5xl sm:text-6xl md:text-7xl tracking-tight leading-none will-change-transform"
         >
-          Engineering the next generation <br />
-          <span className="text-maroon-bright">of computer engineers.</span>
+          Building industry-ready <br />
+          <span className="text-maroon-bright">software &amp; embedded systems engineers.</span>
         </motion.h1>
 
         <motion.p
@@ -84,23 +85,29 @@ export default function HeroSection() {
           transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
           className="text-lg md:text-xl text-gray max-w-2xl mx-auto font-normal leading-relaxed will-change-transform"
         >
-          The academic home for Computer Engineering students, faculty, and researchers at CIT-U.
+          Where CIT-U Computer Engineering students build real software and embedded systems —
+          through projects, research, competitions, and professional activities.
         </motion.p>
 
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1], delay: 0.3 }}
-          className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-2"
+          className="flex flex-col sm:flex-row flex-wrap items-center justify-center gap-4 pt-2"
         >
-          <a href="#program" className="w-full sm:w-auto">
+          <a href="#featured-projects" className="w-full sm:w-auto">
             <Button variant="solid" className="w-full sm:w-auto">
-              Explore the Program
+              Explore Student Projects
             </Button>
           </a>
-          <a href="/events" className="w-full sm:w-auto">
+          <a href="#research" className="w-full sm:w-auto">
             <Button variant="outline" className="w-full sm:w-auto">
-              Upcoming Events
+              View Research
+            </Button>
+          </a>
+          <a href="#services" className="w-full sm:w-auto">
+            <Button variant="outline" className="w-full sm:w-auto">
+              Access Services
             </Button>
           </a>
         </motion.div>

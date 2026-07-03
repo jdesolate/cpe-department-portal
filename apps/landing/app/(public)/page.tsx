@@ -3,6 +3,7 @@ import DepartmentCarousel from "@/components/DepartmentCarousel";
 import HeroSection from "@/components/home/HeroSection";
 import CoreCompetencies from "@/components/home/CoreCompetencies";
 import QuickAccess from "@/components/home/QuickAccess";
+import Services from "@/components/home/Services";
 import ContactSection from "@/components/home/ContactSection";
 import Tag from "@/components/ui/Tag";
 import TraceDivider from "@/components/ui/TraceDivider";
@@ -54,7 +55,7 @@ export default async function HomePortal() {
         <FadeInView delay={0.05}>
           <div className="via-card overflow-hidden">
             <div className="px-6 py-5 border-b border-line">
-              <TraceDivider label="Outstanding Milestones" as="h2" />
+              <TraceDivider label="Achievements & Recognition" as="h2" />
             </div>
             <div className="p-6">
               {achievements && achievements.length > 0 ? (
@@ -66,7 +67,7 @@ export default async function HomePortal() {
                     >
                       <div className="aspect-video w-full bg-foreground flex items-center justify-center text-gray border-b border-line">
                         <span className="text-[10px] font-mono tracking-widest uppercase text-gray bg-card px-3 py-1 rounded-[2px] border border-line">
-                          {item.image_url ? "System Asset Verified" : "Academic Records Vault"}
+                          Photo coming soon
                         </span>
                       </div>
                       <div className="p-5">
@@ -85,7 +86,7 @@ export default async function HomePortal() {
                 </StaggerChildren>
               ) : (
                 <div className="text-center py-8 text-gray font-mono text-sm italic">
-                  No milestone records active in the current sweep.
+                  No achievements to show yet.
                 </div>
               )}
             </div>
@@ -96,9 +97,9 @@ export default async function HomePortal() {
         <FadeInView delay={0.1}>
           <div className="via-card overflow-hidden">
             <div className="px-6 py-5 border-b border-line">
-              <TraceDivider label="Department Bulletins" as="h2" />
+              <TraceDivider label="Announcements" as="h2" />
               <p className="text-xs text-gray font-mono mt-2">
-                Official directives, pinned notices, and board postings.
+                Official notices and updates from the department.
               </p>
             </div>
 
@@ -128,7 +129,7 @@ export default async function HomePortal() {
                 </StaggerChildren>
               ) : (
                 <div className="text-center py-12 border border-dashed border-line rounded-[4px]">
-                  <p className="text-sm text-gray font-mono italic">No public announcements active.</p>
+                  <p className="text-sm text-gray font-mono italic">No announcements yet.</p>
                 </div>
               )}
             </div>
@@ -137,7 +138,12 @@ export default async function HomePortal() {
 
       </section>
 
-      {/* 5. CONTACT */}
+      {/* 6. DEPARTMENT SERVICES */}
+      <FadeInView delay={0.05}>
+        <Services />
+      </FadeInView>
+
+      {/* 7. CONTACT */}
       <FadeInView delay={0.05}>
         <ContactSection />
       </FadeInView>

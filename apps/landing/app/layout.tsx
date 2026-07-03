@@ -5,6 +5,7 @@ import { cn } from "@/lib/utils";
 import Link from "next/link";
 import Image from "next/image";
 import Button from "@/components/ui/Button";
+import MobileNav from "@/components/layout/MobileNav";
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
@@ -65,9 +66,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <nav className="hidden md:flex items-center gap-1 text-sm font-medium text-gray">
               {[
                 { href: "/", label: "Home" },
-                { href: "/#program", label: "Program" },
+                { href: "/#program", label: "Programs" },
                 { href: "/faculty", label: "Faculty" },
                 { href: "/events", label: "Events" },
+                { href: "/#services", label: "Services" },
+                { href: "/#contact", label: "Contact" },
               ].map(({ href, label }) => (
                 <Link
                   key={href}
@@ -85,19 +88,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             </nav>
 
             {/* Mobile Nav */}
-            <div className="flex md:hidden items-center gap-2">
-              <Link href="/#program" className="text-xs text-gray font-semibold px-2 py-1.5 hover:bg-card rounded-[4px] transition-colors">
-                Program
-              </Link>
-              <Link href="/events" className="text-xs text-gray font-semibold px-2 py-1.5 hover:bg-card rounded-[4px] transition-colors">
-                Events
-              </Link>
-              <a href={process.env.NEXT_PUBLIC_INTERNAL_APP_URL ?? "#"}>
-                <Button variant="solid" className="text-[10px] h-8 px-3">
-                  Login
-                </Button>
-              </a>
-            </div>
+            <MobileNav />
 
           </div>
         </header>
