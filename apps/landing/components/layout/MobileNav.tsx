@@ -13,7 +13,6 @@ const NAV_LINKS = [
   { href: "/#featured-projects", label: "Projects" },
   { href: "/#research", label: "Research" },
   { href: "/events", label: "Events" },
-  { href: "/#contact", label: "Contact" },
 ];
 
 export default function MobileNav() {
