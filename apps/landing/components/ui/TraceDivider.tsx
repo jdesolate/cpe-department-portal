@@ -14,18 +14,26 @@ export function DiamondBullet({ className }: { className?: string }) {
 export default function TraceDivider({
   label,
   as: Tag = "span",
+  light,
   className,
 }: {
   label?: string;
   /** Render the label as a real heading when it marks a section, instead of a plain span. */
   as?: "span" | "h2" | "h3";
+  /** Use lighter text for legibility over a dark background (e.g. a photo scrim). */
+  light?: boolean;
   className?: string;
 }) {
   return (
     <div className={cn("flex items-center gap-3", className)}>
       <DiamondBullet />
       {label && (
-        <Tag className="font-mono text-[10px] uppercase tracking-[0.16em] text-gray whitespace-nowrap">
+        <Tag
+          className={cn(
+            "font-mono text-[10px] uppercase tracking-[0.16em] whitespace-nowrap",
+            light ? "text-white/70" : "text-gray"
+          )}
+        >
           {label}
         </Tag>
       )}

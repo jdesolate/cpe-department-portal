@@ -1,10 +1,12 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useState } from "react";
+import Image from "next/image";
 import { motion, useScroll, useTransform, useReducedMotion } from "framer-motion";
 import Button from "@/components/ui/Button";
 import StatBlock from "@/components/ui/StatBlock";
 import TraceDivider from "@/components/ui/TraceDivider";
+import { cn } from "@/lib/utils";
 
 // Output-forward figures per the brief; add Competition Participations / Research Outputs once real counts are available.
 const STATS = [
@@ -13,9 +15,15 @@ const STATS = [
   { value: "13+", label: "Faculty Members" },
 ];
 
+// Drop a real photo at public/hero/department-hero.jpg to replace the abstract
+// fallback below. Starts false (fallback shown) and only flips on a successful
+// load, so a missing file never causes a flash of low-contrast text.
+const HERO_PHOTO_SRC = "/hero/department-hero.jpg";
+
 export default function HeroSection() {
   const heroRef = useRef<HTMLDivElement>(null);
   const prefersReducedMotion = useReducedMotion();
+  const [hasPhoto, setHasPhoto] = useState(false);
   const { scrollYProgress } = useScroll({
     target: heroRef,
     offset: ["start start", "end start"],
@@ -30,28 +38,50 @@ export default function HeroSection() {
       ref={heroRef}
       className="relative overflow-hidden min-h-[calc(100vh-4rem)] flex flex-col justify-between px-4 md:px-8"
     >
-      {/* Dot-grid texture */}
-      <div className="absolute inset-0 dot-grid" />
+      {/* Background photo — only takes over once it has actually loaded */}
+      <Image
+        src={HERO_PHOTO_SRC}
+        alt="CpE Department students and faculty at CIT-U"
+        fill
+        priority
+        sizes="100vw"
+        className={cn("object-cover transition-opacity duration-500", hasPhoto ? "opacity-100" : "opacity-0")}
+        onLoad={(e) => {
+          // Next's local image optimizer can return 200 with a 0x0 placeholder
+          // for a missing file, which still fires `load` — naturalWidth catches that.
+          if (e.currentTarget.naturalWidth > 0) setHasPhoto(true);
+        }}
+      />
 
-      {/* Bottom fade */}
+      {hasPhoto ? (
+        // Scrim for text legibility over the photo
+        <div className="absolute inset-0 bg-linear-to-t from-foreground via-foreground/60 to-foreground/30" />
+      ) : (
+        <>
+          {/* Dot-grid texture (fallback until a real hero photo is added) */}
+          <div className="absolute inset-0 dot-grid" />
+
+          {/* Decorative circuit lines */}
+          <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-20">
+            <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <linearGradient id="lineGrad" x1="0" y1="0" x2="1" y2="0">
+                  <stop offset="0%" stopColor="#a3333f" stopOpacity="0" />
+                  <stop offset="50%" stopColor="#a3333f" stopOpacity="1" />
+                  <stop offset="100%" stopColor="#a3333f" stopOpacity="0" />
+                </linearGradient>
+              </defs>
+              <line x1="0" y1="30%" x2="100%" y2="30%" stroke="url(#lineGrad)" strokeWidth="0.5" />
+              <line x1="0" y1="60%" x2="100%" y2="60%" stroke="url(#lineGrad)" strokeWidth="0.5" />
+              <line x1="20%" y1="0" x2="20%" y2="100%" stroke="url(#lineGrad)" strokeWidth="0.5" />
+              <line x1="80%" y1="0" x2="80%" y2="100%" stroke="url(#lineGrad)" strokeWidth="0.5" />
+            </svg>
+          </div>
+        </>
+      )}
+
+      {/* Bottom fade back into the page background */}
       <div className="absolute bottom-0 inset-x-0 h-32 bg-linear-to-t from-background to-transparent" />
-
-      {/* Decorative circuit lines */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-20">
-        <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <linearGradient id="lineGrad" x1="0" y1="0" x2="1" y2="0">
-              <stop offset="0%" stopColor="#a3333f" stopOpacity="0" />
-              <stop offset="50%" stopColor="#a3333f" stopOpacity="1" />
-              <stop offset="100%" stopColor="#a3333f" stopOpacity="0" />
-            </linearGradient>
-          </defs>
-          <line x1="0" y1="30%" x2="100%" y2="30%" stroke="url(#lineGrad)" strokeWidth="0.5" />
-          <line x1="0" y1="60%" x2="100%" y2="60%" stroke="url(#lineGrad)" strokeWidth="0.5" />
-          <line x1="20%" y1="0" x2="20%" y2="100%" stroke="url(#lineGrad)" strokeWidth="0.5" />
-          <line x1="80%" y1="0" x2="80%" y2="100%" stroke="url(#lineGrad)" strokeWidth="0.5" />
-        </svg>
-      </div>
 
       {/* Core content */}
       <motion.div
@@ -64,7 +94,7 @@ export default function HeroSection() {
           transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
           className="flex justify-center"
         >
-          <TraceDivider label="ICpEP · CIT-U · Computer Engineering" className="max-w-md" />
+          <TraceDivider label="ICpEP · CIT-U · Computer Engineering" className="max-w-md" light={hasPhoto} />
         </motion.div>
 
         <motion.h1
@@ -72,10 +102,13 @@ export default function HeroSection() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
-          className="font-display font-bold text-5xl sm:text-6xl md:text-7xl tracking-tight leading-none will-change-transform"
+          className={cn(
+            "font-display font-bold text-5xl sm:text-6xl md:text-7xl tracking-tight leading-none will-change-transform",
+            hasPhoto && "text-white"
+          )}
         >
           Building industry-ready <br />
-          <span className="text-maroon-bright">software &amp; embedded systems engineers.</span>
+          <span className={hasPhoto ? "text-gold" : "text-maroon-bright"}>software &amp; embedded systems engineers.</span>
         </motion.h1>
 
         <motion.p
@@ -83,7 +116,10 @@ export default function HeroSection() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
-          className="text-lg md:text-xl text-gray max-w-2xl mx-auto font-normal leading-relaxed will-change-transform"
+          className={cn(
+            "text-lg md:text-xl max-w-2xl mx-auto font-normal leading-relaxed will-change-transform",
+            hasPhoto ? "text-white/85" : "text-gray"
+          )}
         >
           Where CIT-U Computer Engineering students build real software and embedded systems —
           through projects, research, competitions, and professional activities.
@@ -101,12 +137,18 @@ export default function HeroSection() {
             </Button>
           </a>
           <a href="#research" className="w-full sm:w-auto">
-            <Button variant="outline" className="w-full sm:w-auto">
+            <Button
+              variant="outline"
+              className={cn("w-full sm:w-auto", hasPhoto && "border-white text-white hover:bg-white hover:text-foreground")}
+            >
               View Research
             </Button>
           </a>
           <a href="#services" className="w-full sm:w-auto">
-            <Button variant="outline" className="w-full sm:w-auto">
+            <Button
+              variant="outline"
+              className={cn("w-full sm:w-auto", hasPhoto && "border-white text-white hover:bg-white hover:text-foreground")}
+            >
               Browse Tools
             </Button>
           </a>
@@ -120,7 +162,7 @@ export default function HeroSection() {
         transition={{ duration: 0.7, delay: 0.5 }}
         className="relative z-10 w-full max-w-7xl mx-auto pb-8 space-y-6"
       >
-        <div className="flex flex-col items-center gap-1 text-gray font-mono text-[10px] uppercase tracking-[0.2em]">
+        <div className={cn("flex flex-col items-center gap-1 font-mono text-[10px] uppercase tracking-[0.2em]", hasPhoto ? "text-white/70" : "text-gray")}>
           <span>scroll to explore</span>
           <motion.svg
             animate={prefersReducedMotion ? undefined : { y: [0, 4, 0] }}
@@ -136,7 +178,7 @@ export default function HeroSection() {
 
         <div className="hidden md:flex justify-center gap-16">
           {STATS.map((stat) => (
-            <StatBlock key={stat.label} value={stat.value} label={stat.label} />
+            <StatBlock key={stat.label} value={stat.value} label={stat.label} light={hasPhoto} />
           ))}
         </div>
       </motion.div>
