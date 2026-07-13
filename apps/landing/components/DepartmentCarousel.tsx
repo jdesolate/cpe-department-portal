@@ -44,6 +44,7 @@ export default function DepartmentCarousel() {
   const [autoPlay, setAutoPlay] = useState(true);
   const [isHovering, setIsHovering] = useState(false);
   const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
+  const touchStartX = useRef<number | null>(null);
   const isPlaying = autoPlay && !isHovering;
 
   useEffect(() => {
@@ -76,7 +77,19 @@ export default function DepartmentCarousel() {
         if (!e.currentTarget.contains(e.relatedTarget as Node)) setIsHovering(false);
       }}
     >
-      <div className="relative h-115 md:h-130 w-full overflow-hidden rounded-[4px] bg-card border border-line group/carousel">
+      <div
+        className="relative h-115 md:h-130 w-full overflow-hidden rounded-[4px] bg-card border border-line group/carousel"
+        onTouchStart={(e) => {
+          touchStartX.current = e.touches[0].clientX;
+        }}
+        onTouchEnd={(e) => {
+          if (touchStartX.current === null) return;
+          const delta = e.changedTouches[0].clientX - touchStartX.current;
+          touchStartX.current = null;
+          if (Math.abs(delta) < 50) return;
+          setActiveIndex((prev) => (prev + (delta < 0 ? 1 : -1) + DEFAULT_MEDIA.length) % DEFAULT_MEDIA.length);
+        }}
+      >
 
         {DEFAULT_MEDIA.map((item, index) => (
           <div
@@ -121,7 +134,7 @@ export default function DepartmentCarousel() {
 
         <button
           onClick={() => setAutoPlay((prev) => !prev)}
-          className="absolute top-4 left-4 z-30 h-9 w-9 flex items-center justify-center rounded-full bg-foreground/80 text-background opacity-0 group-hover/carousel:opacity-100 focus-visible:opacity-100 transition-all duration-200 border border-line hover:border-gold active:scale-90 cursor-pointer"
+          className="absolute top-4 left-4 z-30 h-11 w-11 flex items-center justify-center rounded-full bg-foreground/80 text-background pointer-fine:opacity-0 pointer-fine:group-hover/carousel:opacity-100 focus-visible:opacity-100 transition-all duration-200 border border-line hover:border-gold active:scale-90 cursor-pointer"
           aria-label={autoPlay ? "Pause slideshow" : "Play slideshow"}
           aria-pressed={!autoPlay}
         >
@@ -130,31 +143,37 @@ export default function DepartmentCarousel() {
 
         <button
           onClick={() => setActiveIndex((prev) => (prev - 1 + DEFAULT_MEDIA.length) % DEFAULT_MEDIA.length)}
-          className="absolute left-4 top-1/2 -translate-y-1/2 z-30 h-10 w-10 flex items-center justify-center rounded-full bg-foreground/70 text-background opacity-0 group-hover/carousel:opacity-100 focus-visible:opacity-100 transition-all duration-200 border border-line hover:border-gold active:scale-90 cursor-pointer"
+          className="absolute left-4 top-1/2 -translate-y-1/2 z-30 h-11 w-11 flex items-center justify-center rounded-full bg-foreground/70 text-background pointer-fine:opacity-0 pointer-fine:group-hover/carousel:opacity-100 focus-visible:opacity-100 transition-all duration-200 border border-line hover:border-gold active:scale-90 cursor-pointer"
           aria-label="Previous slide"
         >
           ←
         </button>
         <button
           onClick={() => setActiveIndex((prev) => (prev + 1) % DEFAULT_MEDIA.length)}
-          className="absolute right-4 top-1/2 -translate-y-1/2 z-30 h-10 w-10 flex items-center justify-center rounded-full bg-foreground/70 text-background opacity-0 group-hover/carousel:opacity-100 focus-visible:opacity-100 transition-all duration-200 border border-line hover:border-gold active:scale-90 cursor-pointer"
+          className="absolute right-4 top-1/2 -translate-y-1/2 z-30 h-11 w-11 flex items-center justify-center rounded-full bg-foreground/70 text-background pointer-fine:opacity-0 pointer-fine:group-hover/carousel:opacity-100 focus-visible:opacity-100 transition-all duration-200 border border-line hover:border-gold active:scale-90 cursor-pointer"
           aria-label="Next slide"
         >
           →
         </button>
 
-        <div className="absolute top-4 right-4 z-30 flex items-center gap-2 bg-foreground/80 px-3 py-2 rounded-[4px] border border-line">
+        {/* Each dot gets a 44px hit area; the visual diamond stays small inside it */}
+        <div className="absolute top-4 right-4 z-30 flex items-center bg-foreground/80 px-1 rounded-[4px] border border-line">
           {DEFAULT_MEDIA.map((_, index) => (
             <button
               key={index}
               onClick={() => setActiveIndex(index)}
-              className={`w-2 h-2 rotate-45 transition-all duration-300 cursor-pointer ${
-                index === activeIndex
-                  ? "bg-gold border border-gold"
-                  : "bg-transparent border border-line hover:border-background/50"
-              }`}
+              className="w-11 h-11 flex items-center justify-center cursor-pointer group/dot"
               aria-label={`Slide ${index + 1}`}
-            />
+              aria-current={index === activeIndex}
+            >
+              <span
+                className={`w-2 h-2 rotate-45 transition-all duration-300 ${
+                  index === activeIndex
+                    ? "bg-gold border border-gold"
+                    : "bg-transparent border border-line group-hover/dot:border-background/50"
+                }`}
+              />
+            </button>
           ))}
         </div>
       </div>

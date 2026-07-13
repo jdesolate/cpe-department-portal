@@ -123,7 +123,7 @@ export default function HeroSection() {
         <div className="flex flex-col items-center gap-1 text-gray font-mono text-[10px] uppercase tracking-[0.2em]">
           <span>scroll to explore</span>
           <motion.svg
-            animate={{ y: [0, 4, 0] }}
+            animate={prefersReducedMotion ? undefined : { y: [0, 4, 0] }}
             transition={{ repeat: Infinity, duration: 1.5, ease: "easeInOut" }}
             className="w-3 h-3"
             fill="none"

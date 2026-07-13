@@ -76,13 +76,8 @@ export default function Services() {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         {SERVICES.map((service) => {
           const isLive = service.href !== "#";
-          return (
-            <a
-              key={service.title}
-              href={service.href}
-              {...(isLive ? { target: "_blank", rel: "noopener noreferrer" } : { "aria-disabled": true })}
-              className="via-card p-6 flex flex-col gap-3 hover:border-gold/40 transition-all duration-300 group cursor-pointer"
-            >
+          const inner = (
+            <>
               <span className="text-maroon-bright group-hover:text-gold-text transition-colors duration-300" aria-hidden="true">
                 {service.icon}
               </span>
@@ -90,9 +85,28 @@ export default function Services() {
                 {service.title}
               </h3>
               <p className="text-sm text-gray font-light leading-relaxed flex-1">{service.body}</p>
-              <span className="text-[11px] font-mono text-gold-text mt-1">
+              <span className={`text-[11px] font-mono mt-1 ${isLive ? "text-gold-text" : "text-gray"}`}>
                 {isLive ? `${service.cta} →` : "Coming soon"}
               </span>
+            </>
+          );
+          // Unreleased tools render as plain cards so nothing tappable leads nowhere.
+          if (!isLive) {
+            return (
+              <div key={service.title} className="via-card p-6 flex flex-col gap-3 opacity-75">
+                {inner}
+              </div>
+            );
+          }
+          return (
+            <a
+              key={service.title}
+              href={service.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="via-card p-6 flex flex-col gap-3 hover:border-gold/40 transition-all duration-300 group cursor-pointer"
+            >
+              {inner}
             </a>
           );
         })}
