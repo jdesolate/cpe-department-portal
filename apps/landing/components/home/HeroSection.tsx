@@ -10,7 +10,7 @@ import TraceDivider from "@/components/ui/TraceDivider";
 const STATS = [
   { value: "65+", label: "Student Projects / Year" },
   { value: "~600", label: "Students Enrolled" },
-  { value: "15+", label: "Faculty Members" },
+  { value: "13+", label: "Faculty Members" },
 ];
 
 export default function HeroSection() {
