@@ -42,12 +42,12 @@ export const SERVICES: Service[] = [
     ),
   },
   {
-    title: "Contribution Tracker",
+    title: "Contrib",
     body: "Track individual contributions across group projects and org work.",
-    href: process.env.NEXT_PUBLIC_CONTRIBUTION_TRACKER_URL ?? "#",
-    cta: "Open Tracker",
+    href: process.env.NEXT_PUBLIC_CONTRIB_URL ?? "https://contribio.web.app/",
+    cta: "Open Contrib",
     category: "Academics",
-    status: process.env.NEXT_PUBLIC_CONTRIBUTION_TRACKER_URL ? "live" : "coming-soon",
+    status: "live",
     icon: (
       <svg {...iconProps}>
         <path d="M9 11l3 3L22 4" />
