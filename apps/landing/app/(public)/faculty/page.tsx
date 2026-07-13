@@ -24,7 +24,7 @@ export default function FacultyDirectory() {
           {FACULTY.map((prof) => (
             <div
               key={prof.id}
-              className="via-card overflow-hidden group hover:border-gold/40 transition-all duration-300 flex flex-col"
+              className="via-card overflow-hidden group hover:border-gold/40 transition-all duration-300 flex flex-col h-full"
             >
               <div className="px-6 pt-8 pb-4 flex items-center gap-4">
                 <FacultyAvatar id={prof.id} name={`${prof.honorific} ${prof.name}`} initials={prof.initials} />
