@@ -39,6 +39,16 @@ export default function FacultyDirectory() {
                 </div>
               </div>
 
+              <div className="px-6 pb-4 flex items-center gap-2 text-xs">
+                <span className="text-gray font-mono">@</span>
+                <a
+                  href={`mailto:${prof.email}`}
+                  className="text-gold-text hover:text-maroon-bright transition-colors font-mono truncate"
+                >
+                  {prof.email}
+                </a>
+              </div>
+
               <div className="px-6 pb-6 mt-auto space-y-3 text-xs border-t border-line pt-4">
                 <div>
                   <span className="font-mono font-semibold text-gray block text-[10px] uppercase tracking-wider mb-1.5">
