@@ -2,6 +2,7 @@ import Tag from "@/components/ui/Tag";
 import TraceDivider, { DiamondBullet } from "@/components/ui/TraceDivider";
 import StaggerChildren from "@cpe/shared/components/animations/StaggerChildren";
 import FadeInView from "@cpe/shared/components/animations/FadeInView";
+import FacultyAvatar from "@/components/FacultyAvatar";
 import { FACULTY } from "@/lib/faculty";
 
 export default function FacultyDirectory() {
@@ -26,9 +27,7 @@ export default function FacultyDirectory() {
               className="via-card overflow-hidden group hover:border-gold/40 transition-all duration-300 flex flex-col"
             >
               <div className="px-6 pt-8 pb-4 flex items-center gap-4">
-                <div className="w-14 h-14 rounded-full bg-maroon-bright flex items-center justify-center text-background font-display font-semibold text-lg shrink-0">
-                  {prof.initials}
-                </div>
+                <FacultyAvatar id={prof.id} name={`${prof.honorific} ${prof.name}`} initials={prof.initials} />
                 <div>
                   <h2 className="font-display font-semibold text-foreground leading-tight group-hover:text-gold-text transition-colors duration-300">
                     {prof.honorific} {prof.name}
