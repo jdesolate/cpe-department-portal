@@ -54,8 +54,9 @@ export default function HeroSection() {
       />
 
       {hasPhoto ? (
-        // Scrim for text legibility over the photo
-        <div className="absolute inset-0 bg-linear-to-t from-foreground via-foreground/60 to-foreground/30" />
+        // Cinematic scrim: darkens edges for text legibility while keeping the
+        // photo visible through the centre. Bottom sits darkest so the stats read.
+        <div className="absolute inset-0 bg-linear-to-t from-foreground via-foreground/45 to-foreground/55" />
       ) : (
         <>
           {/* Dot-grid texture (fallback until a real hero photo is added) */}
@@ -80,8 +81,11 @@ export default function HeroSection() {
         </>
       )}
 
-      {/* Bottom fade back into the page background */}
-      <div className="absolute bottom-0 inset-x-0 h-32 bg-linear-to-t from-background to-transparent" />
+      {/* Bottom fade — blends the hero into the white page below. Only used in the
+          fallback state; with a photo the dark scrim already provides a clean edge. */}
+      {!hasPhoto && (
+        <div className="absolute bottom-0 inset-x-0 h-32 bg-linear-to-t from-background to-transparent" />
+      )}
 
       {/* Core content */}
       <motion.div
