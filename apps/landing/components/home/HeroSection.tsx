@@ -15,10 +15,10 @@ const STATS = [
   { value: "13+", label: "Faculty Members" },
 ];
 
-// Drop a real photo at public/hero/department-hero.jpg to replace the abstract
+// Drop a real photo at public/hero/department-hero.png to replace the abstract
 // fallback below. Starts false (fallback shown) and only flips on a successful
 // load, so a missing file never causes a flash of low-contrast text.
-const HERO_PHOTO_SRC = "/hero/department-hero.jpg";
+const HERO_PHOTO_SRC = "/hero/department-hero.png";
 
 export default function HeroSection() {
   const heroRef = useRef<HTMLDivElement>(null);
