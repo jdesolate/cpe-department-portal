@@ -105,11 +105,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                   {label}
                 </Link>
               ))}
-              <a href={process.env.NEXT_PUBLIC_INTERNAL_APP_URL ?? "#"} className="ml-2">
+              <Link href="/#contact" className="ml-2">
                 <Button variant="solid" className="text-[11px] h-9 px-5">
-                  Portal Login
+                  Contact Us
                 </Button>
-              </a>
+              </Link>
             </nav>
 
             {/* Mobile Nav */}

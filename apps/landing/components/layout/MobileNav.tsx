@@ -63,15 +63,15 @@ export default function MobileNav() {
                 {label}
               </Link>
             ))}
-            <a
-              href={process.env.NEXT_PUBLIC_INTERNAL_APP_URL ?? "#"}
+            <Link
+              href="/#contact"
               onClick={() => setOpen(false)}
               className="py-3"
             >
               <Button variant="solid" className="w-full text-xs h-11">
-                Portal Login
+                Contact Us
               </Button>
-            </a>
+            </Link>
           </nav>
         </div>
       )}
