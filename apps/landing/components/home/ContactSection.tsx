@@ -21,9 +21,14 @@ export default function ContactSection() {
             </li>
           ))}
         </ul>
-        <a href="https://www.facebook.com/cituCPE" target="_blank" rel="noopener noreferrer">
-          <Button variant="outline">Follow us on Facebook</Button>
-        </a>
+        <div className="flex flex-wrap gap-3">
+          <a href="https://www.facebook.com/cituCPE" target="_blank" rel="noopener noreferrer">
+            <Button variant="outline">Follow us on Facebook</Button>
+          </a>
+          <a href="https://m.me/cituCPE" target="_blank" rel="noopener noreferrer">
+            <Button variant="solid">Message us on Messenger</Button>
+          </a>
+        </div>
       </div>
     </section>
   );
