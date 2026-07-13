@@ -5,7 +5,6 @@ import CoreCompetencies from "@/components/home/CoreCompetencies";
 import FeaturedProjects from "@/components/home/FeaturedProjects";
 import ResearchHighlights from "@/components/home/ResearchHighlights";
 import DepartmentActivities from "@/components/home/DepartmentActivities";
-import QuickAccess from "@/components/home/QuickAccess";
 import Services from "@/components/home/Services";
 import ContactSection from "@/components/home/ContactSection";
 import Tag from "@/components/ui/Tag";
@@ -36,37 +35,37 @@ export default async function HomePortal() {
       {/* 1. HERO */}
       <HeroSection />
 
-      {/* 2. MEDIA CAROUSEL */}
+      {/* 2. TOOLS & SERVICES — the hub's primary job, so it sits right under the hero */}
       <FadeInView className="relative -mt-4 z-20">
+        <Services />
+      </FadeInView>
+
+      {/* 3. MEDIA CAROUSEL */}
+      <FadeInView delay={0.05}>
         <DepartmentCarousel />
       </FadeInView>
 
-      {/* 3. CORE COMPETENCIES */}
+      {/* 4. CORE COMPETENCIES */}
       <FadeInView delay={0.05}>
         <CoreCompetencies />
       </FadeInView>
 
-      {/* 4. FEATURED STUDENT PROJECTS */}
+      {/* 5. FEATURED STUDENT PROJECTS */}
       <FadeInView delay={0.05}>
         <FeaturedProjects />
       </FadeInView>
 
-      {/* 5. RESEARCH HIGHLIGHTS */}
+      {/* 6. RESEARCH HIGHLIGHTS */}
       <FadeInView delay={0.05}>
         <ResearchHighlights />
       </FadeInView>
 
-      {/* 6. DEPARTMENT ACTIVITIES */}
+      {/* 7. DEPARTMENT ACTIVITIES */}
       <FadeInView delay={0.05}>
         <DepartmentActivities />
       </FadeInView>
 
-      {/* 7. QUICK ACCESS */}
-      <FadeInView delay={0.05}>
-        <QuickAccess />
-      </FadeInView>
-
-      {/* 5. DASHBOARD GRID */}
+      {/* 8. DASHBOARD GRID */}
       <section id="portal-dashboard" className="max-w-7xl mx-auto px-4 md:px-6 mt-8 pb-20 grid grid-cols-1 gap-8 scroll-mt-20">
 
         {/* Achievement Spotlight */}
@@ -156,12 +155,7 @@ export default async function HomePortal() {
 
       </section>
 
-      {/* 6. DEPARTMENT SERVICES */}
-      <FadeInView delay={0.05}>
-        <Services />
-      </FadeInView>
-
-      {/* 7. CONTACT */}
+      {/* 9. CONTACT */}
       <FadeInView delay={0.05}>
         <ContactSection />
       </FadeInView>

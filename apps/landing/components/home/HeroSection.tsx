@@ -107,7 +107,7 @@ export default function HeroSection() {
           </a>
           <a href="#services" className="w-full sm:w-auto">
             <Button variant="outline" className="w-full sm:w-auto">
-              Access Services
+              Browse Tools
             </Button>
           </a>
         </motion.div>

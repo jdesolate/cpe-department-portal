@@ -89,12 +89,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <nav className="hidden lg:flex items-center gap-1 text-sm font-medium text-gray">
               {[
                 { href: "/", label: "Home" },
+                { href: "/#services", label: "Tools" },
                 { href: "/#program", label: "Programs" },
                 { href: "/faculty", label: "Faculty" },
                 { href: "/#featured-projects", label: "Projects" },
                 { href: "/#research", label: "Research" },
                 { href: "/events", label: "Events" },
-                { href: "/#services", label: "Services" },
                 { href: "/#contact", label: "Contact" },
               ].map(({ href, label }) => (
                 <Link
